@@ -1,5 +1,6 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
+import { PointerLockControls } from "three/examples/jsm/controls/PointerLockControls.js";
 
 import setupLights from "./src/scene/lights";
 import createWheel from "./src/scene/wheel";
@@ -34,9 +35,9 @@ renderer.setSize(sizes.width, sizes.height);
 
 // Variables for physics
 var physics = {
-	swingAmplitude: 0.2,
-	swingSpeed: 0.05,
-	rotationSpeed: 0.02,
+	swingAmplitude: 0.04,
+	swingSpeed: 0.03,
+	rotationSpeed: 0.005,
 };
 
 // Wheel
@@ -93,9 +94,14 @@ window.addEventListener("resize", () => {
 	renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 });
 
+// Raycasting for selecting cabins
 const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2();
+
 let selectedCabin = null;
+
+// Pointer lock controls
+const pointerLockControls = new PointerLockControls(camera, document.body);
 
 window.addEventListener("click", (event) => {
 	mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
@@ -106,7 +112,8 @@ window.addEventListener("click", (event) => {
 
 	if (intersects.length > 0) {
 		selectedCabin = intersects[0].object;
-		// controls.enabled = false; // Disable orbit controls
+		controls.enabled = false; // Disable orbit controls
+		pointerLockControls.lock(); // Enable pointer lock controls
 		console.log("Cabin clicked:", selectedCabin);
 	}
 });
@@ -116,10 +123,12 @@ function resetCameraPosition() {
 	camera.lookAt(wheel.position);
 }
 
+// Reset camera position when pressing 'x'
 window.addEventListener("keydown", (event) => {
 	if (event.key === "x") {
 		selectedCabin = null;
 		controls.enabled = true; // Enable orbit controls
+		pointerLockControls.unlock(); // Disable pointer lock controls
 		resetCameraPosition();
 	}
 });
@@ -127,8 +136,12 @@ window.addEventListener("keydown", (event) => {
 //render
 function animate() {
 	requestAnimationFrame(animate);
-	controls.update();
 
+	if (!selectedCabin) {
+		controls.update();
+	} else {
+		pointerLockControls.update();
+	}
 	// Rotate the Ferris wheel
 	wheel.rotation.z += physics.rotationSpeed;
 
@@ -152,10 +165,15 @@ function animate() {
 		cabin.rotation.z = swingOffset; // Swinging effect without spinning
 	});
 
+	// camera look at selected cabin
 	if (selectedCabin) {
 		camera.position.copy(selectedCabin.position);
 		camera.position.z += 1;
-		camera.lookAt(10, 0, 10);
+
+		// camera in the cabin movement
+		const direction = new THREE.Vector3();
+		camera.getWorldDirection(direction);
+		camera.lookAt(camera.position.clone().add(direction));
 	}
 
 	renderer.render(scene, camera);
