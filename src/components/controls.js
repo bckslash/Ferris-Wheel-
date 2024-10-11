@@ -13,9 +13,8 @@ const controlsBanner = () => {
 	banner.style.gap = "5px";
 
 	banner.innerHTML = `
-        <p><strong>Controls:</strong></p>
-        <p>Right-click on a cabin to enter it.</p>
-        <p>"x" to exit the cabin.</p>
+        <p>Right-click to enter cabin</p>
+        <p>"X" to exit</p>
     `;
 	document.body.appendChild(banner);
 };
