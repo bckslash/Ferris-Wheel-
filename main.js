@@ -3,7 +3,9 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 
 import setupLights from "./src/scene/lights";
 import createWheel from "./src/scene/wheel";
+
 import debugGUI from "./src/gui/debugGUI";
+
 import githubBanner from "./src/components/githubBanner";
 
 //sizes
@@ -14,7 +16,6 @@ const sizes = {
 
 //create scene
 const scene = new THREE.Scene();
-// Set background color
 scene.background = new THREE.Color(0x000000); // Dark blue color
 
 //create camera

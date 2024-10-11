@@ -1,7 +1,6 @@
 import * as THREE from "three";
 
 const createWheel = (scene) => {
-	//create wheel
 	const wheel = new THREE.Mesh(
 		new THREE.TorusGeometry(5, 0.1, 32, 10),
 		new THREE.MeshStandardMaterial({ color: 0x0077ff })
