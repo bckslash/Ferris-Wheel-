@@ -9,6 +9,7 @@ import debugGUI from "./src/gui/debugGUI";
 
 import githubBanner from "./src/components/githubBanner";
 import controlsBanner from "./src/components/controls";
+import GLTFwheel from "./src/scene/GLTFwheel";
 
 //sizes
 const sizes = {
@@ -153,6 +154,9 @@ window.addEventListener("keydown", (event) => {
 		resetCameraPosition();
 	}
 });
+
+// GLTFwheel
+GLTFwheel(scene);
 
 //render
 function animate() {
