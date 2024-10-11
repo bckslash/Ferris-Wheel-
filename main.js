@@ -45,7 +45,7 @@ var physics = {
 	swingAmplitude: 0.04,
 	swingSpeed: 0.03,
 	rotationSpeed: 0.005,
-	wheelAnimationSpeed: 5,
+	wheelAnimationSpeed: 1.5,
 };
 
 // Wheel
