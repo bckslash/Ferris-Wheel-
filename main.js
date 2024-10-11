@@ -8,6 +8,7 @@ import createWheel from "./src/scene/wheel";
 import debugGUI from "./src/gui/debugGUI";
 
 import githubBanner from "./src/components/githubBanner";
+import controlsBanner from "./src/components/controls";
 
 //sizes
 const sizes = {
@@ -78,6 +79,26 @@ debugGUI({
 
 //Github Link Banner
 githubBanner();
+
+// Controls banner
+controlsBanner();
+
+// Right-click to enter cabin
+window.addEventListener("contextmenu", (event) => {
+	event.preventDefault();
+	mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+	mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+	raycaster.setFromCamera(mouse, camera);
+	const intersects = raycaster.intersectObjects(cabins);
+
+	if (intersects.length > 0) {
+		selectedCabin = intersects[0].object;
+		controls.enabled = false; // Disable orbit controls
+		pointerLockControls.lock(); // Enable pointer lock controls
+		console.log("Cabin right-clicked:", selectedCabin);
+	}
+});
 
 //resize
 window.addEventListener("resize", () => {
