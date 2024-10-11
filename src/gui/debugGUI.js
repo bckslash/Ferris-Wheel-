@@ -1,9 +1,7 @@
 import GUI from "lil-gui";
 
 const debugGUI = ({
-	swingAmplitude,
-	swingSpeed,
-	rotationSpeed,
+	physics,
 	lights: { light, light2, light3 },
 	lightMarkersGroup,
 	scene,
@@ -13,20 +11,11 @@ const debugGUI = ({
 	const gui = new GUI();
 
 	const physicsFolder = gui.addFolder("Physics");
-	physicsFolder
-		.add({ swingAmplitude }, "swingAmplitude", 0, 1)
-		.name("Swing Amplitude")
-		.onChange((value) => (swingAmplitude = value));
+	physicsFolder.add(physics, "swingAmplitude", 0, 1).name("Swing Amplitude");
 
-	physicsFolder
-		.add({ swingSpeed }, "swingSpeed", 0, 0.2)
-		.name("Swing Speed")
-		.onChange((value) => (swingSpeed = value));
+	physicsFolder.add(physics, "swingSpeed", 0, 0.2).name("Swing Speed");
 
-	physicsFolder
-		.add({ rotationSpeed }, "rotationSpeed", 0, 0.2)
-		.name("Rotation Speed")
-		.onChange((value) => (rotationSpeed = value));
+	physicsFolder.add(physics, "rotationSpeed", 0, 0.2).name("Rotation Speed");
 	physicsFolder.open();
 
 	// Add control for light intensity
@@ -74,7 +63,7 @@ const debugGUI = ({
 		});
 	otherSettings.open();
 
-	return { swingAmplitude, swingSpeed, rotationSpeed };
+	return physics;
 };
 
 export default debugGUI;

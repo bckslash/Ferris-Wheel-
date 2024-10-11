@@ -65,7 +65,7 @@ scene.add(axes);
 
 // Setup GUI
 debugGUI({
-	...physics,
+	physics,
 	lights: { light, light2, light3 },
 	lightMarkersGroup,
 	scene,
