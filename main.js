@@ -50,7 +50,7 @@ const { wheel, cabins, radius } = createWheel(scene);
 
 //create ground
 const ground = new THREE.Mesh(
-	new THREE.CylinderGeometry(15, 15, 1, 16),
+	new THREE.CylinderGeometry(20, 15, 1, 16),
 	new THREE.MeshStandardMaterial({ color: 0x808080 })
 );
 
