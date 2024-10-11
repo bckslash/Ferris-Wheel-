@@ -20,7 +20,7 @@ scene.background = new THREE.Color(0x000000); // Dark blue color
 
 //create camera
 const camera = new THREE.PerspectiveCamera(
-	50,
+	60,
 	sizes.width / sizes.height,
 	0.1,
 	1000
@@ -76,7 +76,7 @@ debugGUI({
 });
 
 //Github Link Banner
-const banner = githubBanner();
+githubBanner();
 
 //resize
 window.addEventListener("resize", () => {
@@ -91,6 +91,37 @@ window.addEventListener("resize", () => {
 	//update renderer
 	renderer.setSize(sizes.width, sizes.height);
 	renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+});
+
+const raycaster = new THREE.Raycaster();
+const mouse = new THREE.Vector2();
+let selectedCabin = null;
+
+window.addEventListener("click", (event) => {
+	mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+	mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+	raycaster.setFromCamera(mouse, camera);
+	const intersects = raycaster.intersectObjects(cabins);
+
+	if (intersects.length > 0) {
+		selectedCabin = intersects[0].object;
+		// controls.enabled = false; // Disable orbit controls
+		console.log("Cabin clicked:", selectedCabin);
+	}
+});
+
+function resetCameraPosition() {
+	camera.position.set(0, 0, 20); // Adjust these values to your base position
+	camera.lookAt(wheel.position);
+}
+
+window.addEventListener("keydown", (event) => {
+	if (event.key === "x") {
+		selectedCabin = null;
+		controls.enabled = true; // Enable orbit controls
+		resetCameraPosition();
+	}
 });
 
 //render
@@ -120,6 +151,12 @@ function animate() {
 		// Keep the cabin upright (no spinning)
 		cabin.rotation.z = swingOffset; // Swinging effect without spinning
 	});
+
+	if (selectedCabin) {
+		camera.position.copy(selectedCabin.position);
+		camera.position.z += 1;
+		camera.lookAt(10, 0, 10);
+	}
 
 	renderer.render(scene, camera);
 }
