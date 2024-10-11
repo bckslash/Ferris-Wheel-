@@ -32,8 +32,11 @@ camera.position.z = 20;
 
 //create renderer
 const canvas = document.querySelector(".webgl");
-const renderer = new THREE.WebGLRenderer({ canvas });
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
 renderer.setSize(sizes.width, sizes.height);
+// shadows
+renderer.shadowMap.enabled = true; // Enable shadow maps
+renderer.shadowMap.type = THREE.PCFSoftShadowMap; // Optional: Choose shadow map type
 
 // Variables for physics
 var physics = {
@@ -52,6 +55,7 @@ const ground = new THREE.Mesh(
 );
 
 ground.position.y = -6.2;
+ground.receiveShadow = true; // Enable shadows for the ground
 scene.add(ground);
 
 //point camera at the sphere

@@ -6,6 +6,8 @@ const createWheel = (scene) => {
 		new THREE.MeshStandardMaterial({ color: 0x0077ff })
 	);
 	scene.add(wheel);
+	wheel.castShadow = true; // Enable shadows for the wheel
+	wheel.receiveShadow = true; // Enable shadows for the wheel
 
 	//cabins
 	const numberOfCabins = 10;
@@ -25,6 +27,8 @@ const createWheel = (scene) => {
 		);
 		cabin.userData.angle = angle; // Store the original angle for rotation reference
 		cabin.userData.swing = Math.random() * Math.PI * 2; // Random starting swing angle
+		cabin.castShadow = true; // Enable shadows for the cabins
+		cabin.receiveShadow = true; // Enable shadows for the cabins
 		cabins.push(cabin);
 		scene.add(cabin);
 	}
