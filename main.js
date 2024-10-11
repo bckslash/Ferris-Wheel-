@@ -11,6 +11,8 @@ import githubBanner from "./src/components/githubBanner";
 import controlsBanner from "./src/components/controls";
 import GLTFwheel from "./src/scene/GLTFwheel";
 
+import resize from "./src/utils/resize";
+
 //sizes
 const sizes = {
 	width: window.innerWidth,
@@ -43,6 +45,7 @@ var physics = {
 	swingAmplitude: 0.04,
 	swingSpeed: 0.03,
 	rotationSpeed: 0.005,
+	wheelAnimationSpeed: 5,
 };
 
 // Wheel
@@ -106,19 +109,7 @@ window.addEventListener("contextmenu", (event) => {
 });
 
 //resize
-window.addEventListener("resize", () => {
-	//update sizes
-	sizes.width = window.innerWidth;
-	sizes.height = window.innerHeight;
-
-	//update camera
-	camera.aspect = sizes.width / sizes.height;
-	camera.updateProjectionMatrix();
-
-	//update renderer
-	renderer.setSize(sizes.width, sizes.height);
-	renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-});
+resize(sizes, camera, renderer);
 
 // Raycasting for selecting cabins
 const raycaster = new THREE.Raycaster();
@@ -159,12 +150,41 @@ window.addEventListener("keydown", (event) => {
 	}
 });
 
-// GLTFwheel
-GLTFwheel(scene);
+// GLTFwheel - Load Model and receive mixer via callback
+let mixer = null;
+let animationAction = null;
+GLTFwheel(
+	scene,
+	(loadedMixer) => {
+		mixer = loadedMixer;
+		animationAction = mixer.existingAction(mixer._actions[0]._clip);
+	},
+	physics
+);
+
+// Clock for animation timing
+const clock = new THREE.Clock();
+
+// Track previous animation speed
+let previousAnimationSpeed = physics.wheelAnimationSpeed;
 
 //render
 function animate() {
 	requestAnimationFrame(animate);
+
+	const delta = clock.getDelta();
+	if (mixer) {
+		mixer.update(delta);
+	}
+
+	// Update animation speed if it has changed
+	if (
+		animationAction &&
+		physics.wheelAnimationSpeed !== previousAnimationSpeed
+	) {
+		animationAction.timeScale = physics.wheelAnimationSpeed;
+		previousAnimationSpeed = physics.wheelAnimationSpeed;
+	}
 
 	if (!selectedCabin) {
 		controls.update();

@@ -16,6 +16,10 @@ const debugGUI = ({
 	physicsFolder.add(physics, "swingSpeed", 0, 0.2).name("Swing Speed");
 
 	physicsFolder.add(physics, "rotationSpeed", 0, 0.2).name("Rotation Speed");
+
+	physicsFolder
+		.add(physics, "wheelAnimationSpeed", -10, 10)
+		.name("Wheel Animation Speed");
 	physicsFolder.open();
 
 	// Add control for light intensity
