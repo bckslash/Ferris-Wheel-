@@ -28,7 +28,7 @@ To get started with the project, clone this repository and install the dependenc
 
 ```bash
 git clone https://github.com/yourusername/ferris-wheel-simulation.git
-cd ferris-wheel-simulation
+cd Ferris-Wheel
 npm install
 ```
 
