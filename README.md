@@ -27,7 +27,7 @@ This project showcases a 3D Ferris wheel simulation built with Three.js. It incl
 To get started with the project, clone this repository and install the dependencies:
 
 ```bash
-git clone https://github.com/yourusername/ferris-wheel-simulation.git
+git clone https://github.com/bckslash/Ferris-Wheel.git
 cd Ferris-Wheel
 npm install
 ```
