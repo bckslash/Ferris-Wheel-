@@ -25,7 +25,7 @@ scene.background = new THREE.Color(0x000000); // Dark blue color
 
 //create camera
 const camera = new THREE.PerspectiveCamera(
-	60,
+	50,
 	sizes.width / sizes.height,
 	0.1,
 	1000
@@ -53,7 +53,7 @@ const { wheel, cabins, radius } = createWheel(scene);
 
 //create ground
 const ground = new THREE.Mesh(
-	new THREE.CylinderGeometry(20, 15, 1, 16),
+	new THREE.CylinderGeometry(25, 25, 1, 16),
 	new THREE.MeshStandardMaterial({ color: 0x808080 })
 );
 

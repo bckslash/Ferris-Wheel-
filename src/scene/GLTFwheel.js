@@ -9,8 +9,8 @@ const GLTFwheel = (scene, onLoadCallback, physics) => {
 		"/models/ferriswheel/scene.gltf",
 		(gltf) => {
 			// Scale, position, and rotate model
-			gltf.scene.scale.set(0.2, 0.2, 0.2);
-			gltf.scene.position.set(10, -5.6, 0);
+			gltf.scene.scale.set(0.25, 0.25, 0.25);
+			gltf.scene.position.set(15, -5.6, 0);
 			gltf.scene.rotation.y = Math.PI / -3;
 
 			// Enable shadows for all meshes
