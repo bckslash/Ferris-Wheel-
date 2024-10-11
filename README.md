@@ -1,11 +1,11 @@
-# Pocitacova Grafika Course
+# Ferris Wheel Simulation
 
-Welcome to the Pocitacova Grafika course repository. This course covers the fundamentals of computer graphics.
+Welcome to the Ferris Wheel Simulation project. This project demonstrates a 3D Ferris wheel simulation using Three.js, complete with physics for swinging cabins and a debug GUI for adjusting various parameters.
 
 ## Table of Contents
 
 -   [Introduction](#introduction)
--   [Course Outline](#course-outline)
+-   [Features](#features)
 -   [Installation](#installation)
 -   [Usage](#usage)
 -   [Contributing](#contributing)
@@ -13,34 +13,25 @@ Welcome to the Pocitacova Grafika course repository. This course covers the fund
 
 ## Introduction
 
-This course is designed to introduce students to the principles and techniques used in computer graphics. Topics include rendering, modeling, and animation.
+This project showcases a 3D Ferris wheel simulation built with Three.js. It includes physics for swinging cabins and a debug GUI for real-time adjustments of various parameters such as swing amplitude, swing speed, and rotation speed.
 
-## Course Outline
+## Features
 
-1. **Introduction to Computer Graphics**
-2. **2D Graphics**
-3. **3D Graphics**
-4. **Rendering Techniques**
-5. **Modeling and Animation**
-6. **Advanced Topics**
+-   3D Ferris wheel with rotating cabins
+-   Physics for swinging cabins
+-   Debug GUI for adjusting physics and light settings
+-   Responsive design
 
 ## Installation
 
-To get started with the course materials, clone this repository:
+To get started with the project, clone this repository and install the dependencies:
 
-```bash
-git clone https://github.com/yourusername/pocitacova-grafika-course.git
-cd pocitacova-grafika-course
-```
+`````bash
+git clone https://github.com/yourusername/ferris-wheel-simulation.git
+cd ferris-wheel-simulation
+npm install
 
-## Usage
+````bash
+npm run dev
 
-Follow the instructions in each module's README file to complete the exercises and projects.
-
-## Contributing
-
-Contributions are welcome! Please fork this repository and submit pull requests.
-
-## License
-
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+`````
