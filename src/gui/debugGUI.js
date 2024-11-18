@@ -6,6 +6,7 @@ const debugGUI = ({
 	lightMarkersGroup,
 	scene,
 	axes,
+	renderPixelatedPass,
 }) => {
 	// GUI
 	const gui = new GUI();
@@ -68,6 +69,28 @@ const debugGUI = ({
 			lightMarkersGroup.visible = value;
 		});
 	otherSettings.open();
+
+	const postProcessingSettings = gui.addFolder("Post Processing Settings");
+	let params = {
+		pixelSize: 6,
+		normalEdgeStrength: 0.3,
+	};
+	postProcessingSettings
+		.add(params, "pixelSize")
+		.min(1)
+		.max(16)
+		.step(1)
+		.onChange(() => {
+			renderPixelatedPass.setPixelSize(params.pixelSize);
+		});
+
+	postProcessingSettings
+		.add(renderPixelatedPass, "normalEdgeStrength")
+		.min(0)
+		.max(2)
+		.step(0.05);
+
+	postProcessingSettings.open();
 
 	return physics;
 };

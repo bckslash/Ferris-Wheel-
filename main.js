@@ -23,6 +23,8 @@ const sizes = {
 	height: window.innerHeight,
 };
 
+let pixelated = 1;
+
 //create scene
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x000000); // Dark blue color
@@ -43,7 +45,7 @@ renderer.setSize(sizes.width, sizes.height);
 
 // Pixelated post-processing effect
 let composer = new EffectComposer(renderer);
-const renderPixelatedPass = new RenderPixelatedPass(6, scene, camera);
+const renderPixelatedPass = new RenderPixelatedPass(4, scene, camera);
 composer.addPass(renderPixelatedPass);
 
 const outputPass = new OutputPass();
@@ -96,6 +98,7 @@ debugGUI({
 	lightMarkersGroup,
 	scene,
 	axes,
+	renderPixelatedPass,
 });
 
 //Github Link Banner
