@@ -1,4 +1,4 @@
-const resize = (sizes, camera, renderer) => {
+const resize = (sizes, camera, renderer, composer) => {
 	window.addEventListener("resize", () => {
 		//update sizes
 		sizes.width = window.innerWidth;
@@ -11,6 +11,9 @@ const resize = (sizes, camera, renderer) => {
 		//update renderer
 		renderer.setSize(sizes.width, sizes.height);
 		renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+		//composer
+		composer.setSize(sizes.width, sizes.height);
 	});
 };
 

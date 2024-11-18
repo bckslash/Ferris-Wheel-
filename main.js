@@ -2,6 +2,10 @@ import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { PointerLockControls } from "three/examples/jsm/controls/PointerLockControls.js";
 
+import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer.js";
+import { RenderPixelatedPass } from "three/examples/jsm/Addons.js";
+import { OutputPass } from "three/examples/jsm/Addons.js";
+
 import setupLights from "./src/scene/lights";
 import createWheel from "./src/scene/wheel";
 
@@ -9,7 +13,7 @@ import debugGUI from "./src/gui/debugGUI";
 
 import githubBanner from "./src/components/githubBanner";
 import controlsBanner from "./src/components/controls";
-import GLTFwheel from "./src/scene/GLTFwheel";
+// import GLTFwheel from "./src/scene/GLTFwheel";
 
 import resize from "./src/utils/resize";
 
@@ -36,6 +40,15 @@ camera.position.z = 20;
 const canvas = document.querySelector(".webgl");
 const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
 renderer.setSize(sizes.width, sizes.height);
+
+// Pixelated post-processing effect
+let composer = new EffectComposer(renderer);
+const renderPixelatedPass = new RenderPixelatedPass(6, scene, camera);
+composer.addPass(renderPixelatedPass);
+
+const outputPass = new OutputPass();
+composer.addPass(outputPass);
+
 // shadows
 renderer.shadowMap.enabled = true; // Enable shadow maps
 renderer.shadowMap.type = THREE.PCFSoftShadowMap; // Optional: Choose shadow map type
@@ -109,7 +122,7 @@ window.addEventListener("contextmenu", (event) => {
 });
 
 //resize
-resize(sizes, camera, renderer);
+resize(sizes, camera, renderer, composer);
 
 // Raycasting for selecting cabins
 const raycaster = new THREE.Raycaster();
@@ -151,16 +164,16 @@ window.addEventListener("keydown", (event) => {
 });
 
 // GLTFwheel - Load Model and receive mixer via callback
-let mixer = null;
-let animationAction = null;
-GLTFwheel(
-	scene,
-	(loadedMixer) => {
-		mixer = loadedMixer;
-		animationAction = mixer.existingAction(mixer._actions[0]._clip);
-	},
-	physics
-);
+// let mixer = null;
+// let animationAction = null;
+// GLTFwheel(
+// 	scene,
+// 	(loadedMixer) => {
+// 		mixer = loadedMixer;
+// 		animationAction = mixer.existingAction(mixer._actions[0]._clip);
+// 	},
+// 	physics
+// );
 
 // Clock for animation timing
 const clock = new THREE.Clock();
@@ -172,19 +185,19 @@ let previousAnimationSpeed = physics.wheelAnimationSpeed;
 function animate() {
 	requestAnimationFrame(animate);
 
-	const delta = clock.getDelta();
-	if (mixer) {
-		mixer.update(delta);
-	}
+	// const delta = clock.getDelta();
+	// if (mixer) {
+	// 	mixer.update(delta);
+	// }
 
 	// Update animation speed if it has changed
-	if (
-		animationAction &&
-		physics.wheelAnimationSpeed !== previousAnimationSpeed
-	) {
-		animationAction.timeScale = physics.wheelAnimationSpeed;
-		previousAnimationSpeed = physics.wheelAnimationSpeed;
-	}
+	// if (
+	// 	animationAction &&
+	// 	physics.wheelAnimationSpeed !== previousAnimationSpeed
+	// ) {
+	// 	animationAction.timeScale = physics.wheelAnimationSpeed;
+	// 	previousAnimationSpeed = physics.wheelAnimationSpeed;
+	// }
 
 	if (!selectedCabin) {
 		controls.update();
@@ -225,7 +238,7 @@ function animate() {
 		camera.lookAt(camera.position.clone().add(direction));
 	}
 
-	renderer.render(scene, camera);
+	composer.render();
 }
 
 animate();
