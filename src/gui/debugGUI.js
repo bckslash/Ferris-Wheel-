@@ -72,7 +72,7 @@ const debugGUI = ({
 
 	const postProcessingSettings = gui.addFolder("Post Processing Settings");
 	let params = {
-		pixelSize: 6,
+		pixelSize: 5,
 		normalEdgeStrength: 0.3,
 	};
 	postProcessingSettings
