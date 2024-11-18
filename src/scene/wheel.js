@@ -1,24 +1,27 @@
 import * as THREE from "three";
 
 const createWheel = (scene) => {
-	const wheel = new THREE.Mesh(
+	const wheel1 = new THREE.Mesh(
 		new THREE.TorusGeometry(5, 0.1, 32, 10),
 		new THREE.MeshStandardMaterial({ color: 0x0077ff })
 	);
-	scene.add(wheel);
-	wheel.castShadow = true; // Enable shadows for the wheel
-	wheel.receiveShadow = true; // Enable shadows for the wheel
+	wheel1.castShadow = true; // Enable shadows for the wheel
+	wheel1.receiveShadow = true; // Enable shadows for the wheel
 
 	const wheel2 = new THREE.Mesh(
 		new THREE.TorusGeometry(5, 0.1, 32, 10),
 		new THREE.MeshStandardMaterial({ color: 0x0077ff })
 	);
-	scene.add(wheel2);
 	wheel2.castShadow = true; // Enable shadows for the wheel
 	wheel2.receiveShadow = true; // Enable shadows for the wheel
 
-	wheel.position.z = 0.6;
+	wheel1.position.z = 0.6;
 	wheel2.position.z = -0.6;
+
+	const wheel = new THREE.Group();
+	wheel.add(wheel1);
+	wheel.add(wheel2);
+	scene.add(wheel);
 
 	//cabins
 	const numberOfCabins = 10;
