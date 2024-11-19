@@ -67,7 +67,8 @@ const debugGUI = ({
 		.name("Show Light Markers")
 		.onChange((value) => {
 			lightMarkersGroup.visible = value;
-		});
+		})
+		.setValue(false);
 	otherSettings.open();
 
 	const postProcessingSettings = gui.addFolder("Post Processing Settings");

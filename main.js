@@ -74,7 +74,7 @@ const ground = new THREE.Mesh(
 );
 // Load texture
 const textureLoader = new THREE.TextureLoader();
-const groundTexture = textureLoader.load("./src/assets/grass.jpg");
+const groundTexture = textureLoader.load("./assets/grass.jpg");
 groundTexture.wrapS = THREE.RepeatWrapping;
 groundTexture.wrapT = THREE.RepeatWrapping;
 groundTexture.repeat.set(5, 5);
@@ -101,7 +101,6 @@ const createTreeRing = (count, distance) => {
 		scene.add(randomTree);
 	}
 };
-
 // Create two rings of trees
 createTreeRing(10, radius + 6);
 createTreeRing(10, radius + 12);
@@ -116,7 +115,7 @@ const skybox = new THREE.Mesh(skyboxGeometry, skyboxMaterial);
 skybox.position.y = -5;
 
 // Load skybox texture
-const skyboxTexture = textureLoader.load("./src/assets/skybox_2.png");
+const skyboxTexture = textureLoader.load("./assets/skybox_2.png");
 skyboxMaterial.map = skyboxTexture;
 skyboxMaterial.needsUpdate = true;
 scene.add(skybox);
