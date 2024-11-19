@@ -87,31 +87,24 @@ ground.position.y = -6.2;
 ground.receiveShadow = true; // Enable shadows for the ground
 scene.add(ground);
 
-// Create 10 random trees and place them around the wheel
-for (let i = 0; i < 10; i++) {
-	const randomTree = Math.random() > 0.5 ? createTree() : createPineTree();
-	const angle = (i / 10) * Math.PI * 2; // Evenly distribute trees around the wheel
-	const distance = radius + 6; // Distance from the center of the wheel
-	randomTree.position.set(
-		Math.cos(angle) * distance,
-		-6,
-		Math.sin(angle) * distance
-	);
-	scene.add(randomTree);
-}
+// Create trees in two circles around the wheel
+const createTreeRing = (count, distance) => {
+	for (let i = 0; i < count; i++) {
+		const angle = (i / count) * Math.PI * 2;
+		const randomTree =
+			Math.random() > 0.5 ? createTree() : createPineTree();
+		randomTree.position.set(
+			Math.cos(angle) * distance,
+			-6,
+			Math.sin(angle) * distance
+		);
+		scene.add(randomTree);
+	}
+};
 
-// Create 10 random trees and place them around the wheel
-for (let i = 0; i < 10; i++) {
-	const randomTree = Math.random() > 0.5 ? createTree() : createPineTree();
-	const angle = (i / 10) * Math.PI * 2; // Evenly distribute trees around the wheel
-	const distance = radius + 12; // Distance from the center of the wheel
-	randomTree.position.set(
-		Math.cos(angle) * distance,
-		-6,
-		Math.sin(angle) * distance
-	);
-	scene.add(randomTree);
-}
+// Create two rings of trees
+createTreeRing(10, radius + 6);
+createTreeRing(10, radius + 12);
 
 // skybox
 const skyboxGeometry = new THREE.SphereGeometry(100, 32, 32);
