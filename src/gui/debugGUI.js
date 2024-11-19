@@ -38,21 +38,24 @@ const debugGUI = ({
 		.name("Light 1 Intensity")
 		.onChange((value) => {
 			light.intensity = value;
-		});
+		})
+		.setValue(200);
 
 	lightFolder
 		.add(lightSettings, "lightIntensity_2", 0, 200)
 		.name("Light 2 Intensity")
 		.onChange((value) => {
 			light2.intensity = value;
-		});
+		})
+		.setValue(200);
 
 	lightFolder
 		.add(lightSettings, "lightIntensity_3", 0, 200)
 		.name("Light 3 Intensity")
 		.onChange((value) => {
 			light3.intensity = value;
-		});
+		})
+		.setValue(20);
 	lightFolder.open();
 
 	const otherSettings = gui.addFolder("Other Settings");
