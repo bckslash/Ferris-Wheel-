@@ -21,6 +21,7 @@ const createWheel = (scene) => {
 	const wheel = new THREE.Group();
 	wheel.add(wheel1);
 	wheel.add(wheel2);
+	wheel.position.y = 0.3;
 	scene.add(wheel);
 
 	//cabins
@@ -30,7 +31,7 @@ const createWheel = (scene) => {
 
 	for (let i = 0; i < numberOfCabins; i++) {
 		const cabin = new THREE.Mesh(
-			new THREE.BoxGeometry(1.3, 1.2, 1.0),
+			new THREE.BoxGeometry(1.2, 1.2, 1.0),
 			new THREE.MeshStandardMaterial({ color: 0xff7700 })
 		);
 		const angle = (i / numberOfCabins) * Math.PI * 2;

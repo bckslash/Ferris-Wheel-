@@ -57,7 +57,7 @@ const debugGUI = ({
 
 	const otherSettings = gui.addFolder("Other Settings");
 	otherSettings.add(scene, "visible").name("Show Scene");
-	otherSettings.add(axes, "visible").name("Show Axes");
+	otherSettings.add(axes, "visible").name("Show Axes").setValue(false);
 
 	const lightMarkersSettings = {
 		showLightMarkers: true,
@@ -91,6 +91,8 @@ const debugGUI = ({
 		.step(0.05);
 
 	postProcessingSettings.open();
+
+	gui.close();
 
 	return physics;
 };

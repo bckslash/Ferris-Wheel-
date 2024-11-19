@@ -16,6 +16,7 @@ import controlsBanner from "./src/components/controls";
 // import GLTFwheel from "./src/scene/GLTFwheel";
 
 import resize from "./src/utils/resize";
+import { createTree, createPineTree } from "./src/scene/tree";
 
 //sizes
 const sizes = {
@@ -68,13 +69,64 @@ const { wheel, cabins, radius } = createWheel(scene);
 
 //create ground
 const ground = new THREE.Mesh(
-	new THREE.CylinderGeometry(25, 25, 1, 16),
-	new THREE.MeshStandardMaterial({ color: 0x808080 })
+	new THREE.CylinderGeometry(20, 20, 1, 16),
+	new THREE.MeshStandardMaterial({ color: 0x00ff00 }) // Grass green color
 );
+// Load texture
+const textureLoader = new THREE.TextureLoader();
+const groundTexture = textureLoader.load("./src/assets/grass.jpg");
+groundTexture.wrapS = THREE.RepeatWrapping;
+groundTexture.wrapT = THREE.RepeatWrapping;
+groundTexture.repeat.set(5, 5);
+
+// Apply texture to ground material
+ground.material.map = groundTexture;
+ground.material.needsUpdate = true;
 
 ground.position.y = -6.2;
 ground.receiveShadow = true; // Enable shadows for the ground
 scene.add(ground);
+
+// Create 10 random trees and place them around the wheel
+for (let i = 0; i < 10; i++) {
+	const randomTree = Math.random() > 0.5 ? createTree() : createPineTree();
+	const angle = (i / 10) * Math.PI * 2; // Evenly distribute trees around the wheel
+	const distance = radius + 6; // Distance from the center of the wheel
+	randomTree.position.set(
+		Math.cos(angle) * distance,
+		-6,
+		Math.sin(angle) * distance
+	);
+	scene.add(randomTree);
+}
+
+// Create 10 random trees and place them around the wheel
+for (let i = 0; i < 10; i++) {
+	const randomTree = Math.random() > 0.5 ? createTree() : createPineTree();
+	const angle = (i / 10) * Math.PI * 2; // Evenly distribute trees around the wheel
+	const distance = radius + 12; // Distance from the center of the wheel
+	randomTree.position.set(
+		Math.cos(angle) * distance,
+		-6,
+		Math.sin(angle) * distance
+	);
+	scene.add(randomTree);
+}
+
+// skybox
+const skyboxGeometry = new THREE.SphereGeometry(100, 32, 32);
+const skyboxMaterial = new THREE.MeshBasicMaterial({
+	color: 0x87ceeb,
+	side: THREE.BackSide,
+});
+const skybox = new THREE.Mesh(skyboxGeometry, skyboxMaterial);
+skybox.position.y = -5;
+
+// Load skybox texture
+const skyboxTexture = textureLoader.load("./src/assets/skybox_2.png");
+skyboxMaterial.map = skyboxTexture;
+skyboxMaterial.needsUpdate = true;
+scene.add(skybox);
 
 //point camera at the sphere
 camera.lookAt(wheel.position);
