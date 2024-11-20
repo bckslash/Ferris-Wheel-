@@ -16,7 +16,7 @@ import controlsBanner from "./src/components/controls";
 // import GLTFwheel from "./src/scene/GLTFwheel";
 
 import resize from "./src/utils/resize";
-import { createTree, createPineTree } from "./src/scene/tree";
+import { Tree } from "./src/scene/tree";
 
 //sizes
 const sizes = {
@@ -91,13 +91,26 @@ scene.add(ground);
 const createTreeRing = (count, distance) => {
 	for (let i = 0; i < count; i++) {
 		const angle = (i / count) * Math.PI * 2;
+		const random = Math.random();
 		const randomTree =
-			Math.random() > 0.5 ? createTree() : createPineTree();
+			random < 0.33
+				? Tree.createTree()
+				: random < 0.66
+				? Tree.createPine()
+				: Tree.createOak();
 		randomTree.position.set(
 			Math.cos(angle) * distance,
 			-6,
 			Math.sin(angle) * distance
 		);
+
+		if (random < 0.33) {
+			randomTree.scale.y = random + 0.6;
+		} else if (random < 0.66) {
+			randomTree.scale.y = random + 0.5;
+		} else {
+			randomTree.scale.y = random;
+		}
 		scene.add(randomTree);
 	}
 };
@@ -245,6 +258,14 @@ function animate() {
 	// 	animationAction.timeScale = physics.wheelAnimationSpeed;
 	// 	previousAnimationSpeed = physics.wheelAnimationSpeed;
 	// }
+
+	// Animate tree leaves
+	scene.traverse((object) => {
+		if (object.isMesh && object.userData.isTree) {
+			const time = clock.getElapsedTime();
+			object.rotation.y = Math.sin(time * 0.5) * 0.1; // Swaying effect
+		}
+	});
 
 	if (!selectedCabin) {
 		controls.update();
