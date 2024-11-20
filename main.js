@@ -41,7 +41,7 @@ camera.position.z = 20;
 
 //create renderer
 const canvas = document.querySelector(".webgl");
-const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: false });
 renderer.setSize(sizes.width, sizes.height);
 
 // Pixelated post-processing effect
