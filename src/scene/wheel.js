@@ -117,7 +117,7 @@ const createWheel = (scene) => {
 	legs.forEach((leg) => scene.add(leg));
 
 	//cabins
-	const numberOfCabins = 10;
+	const numberOfCabins = 12;
 	const radius = 5;
 	const cabins = [];
 
