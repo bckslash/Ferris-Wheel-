@@ -2,19 +2,25 @@ import * as THREE from "three";
 
 const wheelDistanceZ = 0.65; // Distance between the wheel and the cabins
 const wheelColor = 0x0077ff; // Color of the wheel
-const cabinColor = 0xff7700; // Color of the cabins
+const cabinColor = 0xffa500; // Brighter color for the cabins
+
+// textures
+const textureLoader = new THREE.TextureLoader();
+
+const wheelTexture = textureLoader.load("/assets/metal.jpg");
+const cabinTexture = textureLoader.load("/assets/wood.jpg");
 
 const createWheel = (scene) => {
 	const wheel1 = new THREE.Mesh(
 		new THREE.TorusGeometry(5, 0.15, 32, 10),
-		new THREE.MeshStandardMaterial({ color: wheelColor })
+		new THREE.MeshStandardMaterial({ map: wheelTexture })
 	);
 	wheel1.castShadow = true; // Enable shadows for the wheel
 	wheel1.receiveShadow = true; // Enable shadows for the wheel
 
 	const wheel2 = new THREE.Mesh(
 		new THREE.TorusGeometry(5, 0.15, 32, 10),
-		new THREE.MeshStandardMaterial({ color: wheelColor })
+		new THREE.MeshStandardMaterial({ map: wheelTexture })
 	);
 	wheel2.castShadow = true; // Enable shadows for the wheel
 	wheel2.receiveShadow = true; // Enable shadows for the wheel
@@ -124,7 +130,10 @@ const createWheel = (scene) => {
 	for (let i = 0; i < numberOfCabins; i++) {
 		const cabin = new THREE.Mesh(
 			new THREE.BoxGeometry(1.3, 1.2, 1.0),
-			new THREE.MeshStandardMaterial({ color: cabinColor })
+			new THREE.MeshStandardMaterial({
+				map: cabinTexture,
+				color: cabinColor,
+			})
 		);
 		const angle = (i / numberOfCabins) * Math.PI * 2;
 		cabin.position.set(

@@ -5,6 +5,8 @@ import { PointerLockControls } from "three/examples/jsm/controls/PointerLockCont
 import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer.js";
 import { RenderPixelatedPass } from "three/examples/jsm/Addons.js";
 import { OutputPass } from "three/examples/jsm/Addons.js";
+import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass.js";
+import { OutlinePass } from "three/examples/jsm/postprocessing/OutlinePass.js";
 
 import setupLights from "./src/scene/lights";
 import createWheel from "./src/scene/wheel";
@@ -24,8 +26,6 @@ const sizes = {
 	height: window.innerHeight,
 };
 
-let pixelated = 1;
-
 //create scene
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x000000); // Dark blue color
@@ -44,8 +44,11 @@ const canvas = document.querySelector(".webgl");
 const renderer = new THREE.WebGLRenderer({ canvas, antialias: false });
 renderer.setSize(sizes.width, sizes.height);
 
+// composer
+const composer = new EffectComposer(renderer);
+composer.addPass(new RenderPass(scene, camera));
+
 // Pixelated post-processing effect
-let composer = new EffectComposer(renderer);
 const renderPixelatedPass = new RenderPixelatedPass(4, scene, camera);
 composer.addPass(renderPixelatedPass);
 
@@ -164,6 +167,10 @@ githubBanner();
 // Controls banner
 controlsBanner();
 
+// Raycasting for selecting cabins
+const raycaster = new THREE.Raycaster();
+const mouse = new THREE.Vector2();
+
 // Right-click to enter cabin
 window.addEventListener("contextmenu", (event) => {
 	event.preventDefault();
@@ -181,17 +188,44 @@ window.addEventListener("contextmenu", (event) => {
 	}
 });
 
-//resize
-resize(sizes, camera, renderer, composer);
-
-// Raycasting for selecting cabins
-const raycaster = new THREE.Raycaster();
-const mouse = new THREE.Vector2();
-
 let selectedCabin = null;
 
 // Pointer lock controls
 const pointerLockControls = new PointerLockControls(camera, document.body);
+
+// Outline effect
+const outlinePass = new OutlinePass(
+	new THREE.Vector2(window.innerWidth, window.innerHeight),
+	scene,
+	camera
+);
+
+// Set outline parameters
+outlinePass.edgeStrength = 5.0; // Edge strength
+outlinePass.edgeGlow = 1; // Edge glow
+outlinePass.edgeThickness = 1.0; // Edge thickness
+outlinePass.pulsePeriod = 1; // Pulse period
+outlinePass.visibleEdgeColor.set("#ffffff"); // Edge color when visible
+
+composer.addPass(outlinePass);
+
+// Update outline effect on mouse move
+window.addEventListener("mousemove", (event) => {
+	mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+	mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+	raycaster.setFromCamera(mouse, camera);
+	const intersects = raycaster.intersectObjects(cabins);
+
+	if (intersects.length > 0) {
+		outlinePass.selectedObjects = [intersects[0].object];
+	} else {
+		outlinePass.selectedObjects = [];
+	}
+});
+
+//resize
+resize(sizes, camera, renderer, composer);
 
 window.addEventListener("click", (event) => {
 	mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
@@ -223,41 +257,12 @@ window.addEventListener("keydown", (event) => {
 	}
 });
 
-// GLTFwheel - Load Model and receive mixer via callback
-// let mixer = null;
-// let animationAction = null;
-// GLTFwheel(
-// 	scene,
-// 	(loadedMixer) => {
-// 		mixer = loadedMixer;
-// 		animationAction = mixer.existingAction(mixer._actions[0]._clip);
-// 	},
-// 	physics
-// );
-
 // Clock for animation timing
 const clock = new THREE.Clock();
-
-// Track previous animation speed
-let previousAnimationSpeed = physics.wheelAnimationSpeed;
 
 //render
 function animate() {
 	requestAnimationFrame(animate);
-
-	// const delta = clock.getDelta();
-	// if (mixer) {
-	// 	mixer.update(delta);
-	// }
-
-	// Update animation speed if it has changed
-	// if (
-	// 	animationAction &&
-	// 	physics.wheelAnimationSpeed !== previousAnimationSpeed
-	// ) {
-	// 	animationAction.timeScale = physics.wheelAnimationSpeed;
-	// 	previousAnimationSpeed = physics.wheelAnimationSpeed;
-	// }
 
 	// Animate tree leaves
 	scene.traverse((object) => {

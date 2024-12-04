@@ -83,8 +83,11 @@ function createPineTree() {
 	// shadows
 	trunk.castShadow = true;
 	trunk.receiveShadow = true;
-	leavesGroup.castShadow = true;
-	leavesGroup.receiveShadow = true;
+
+	for (let i = 0; i < leavesGroup.children.length; i++) {
+		leavesGroup.children[i].castShadow = true;
+		leavesGroup.children[i].receiveShadow = true;
+	}
 
 	return tree;
 }
