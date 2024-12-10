@@ -124,7 +124,7 @@ const createWheel = (scene) => {
 	legs.forEach((leg) => scene.add(leg));
 
 	//cabins
-	const numberOfCabins = 10;
+	const numberOfCabins = 12;
 	const radius = 5;
 	const cabins = [];
 
@@ -161,27 +161,24 @@ function createCabin() {
 	// Load GLB model
 	const loader = new GLTFLoader();
 	loader.load(
-		"/models/car.glb",
+		"/models/cabin_generated.glb",
 		function (gltf) {
 			cabin.add(gltf.scene);
 			gltf.scene.traverse((child) => {
 				if (child.isMesh) {
 					child.castShadow = true;
 					child.receiveShadow = true;
-				}
-
-				// Apply colors based on the part name
-				if (child.parent && child.parent.name === "body") {
-					child.material = child.material.clone(); // Clone material
-					child.material.color.setHex(0xff0000); // Red for car body
-				} else if (child.parent && child.parent.name === "front") {
-					child.material = child.material.clone();
-					child.material.color.setHex(0x0000ff); // Blue for front part
-				} else if (child.parent && child.parent.name === "wheels") {
-					child.material = child.material.clone();
-					child.material.color.setHex(0x000000); // Dark gray for wheels
+					child.material = new THREE.MeshStandardMaterial({
+						map: cabinTexture,
+						color: cabinColor,
+					});
 				}
 			});
+
+			// Scale the cabin
+			cabin.scale.set(0.9, 0.9, 0.9);
+
+			console.log("cabin", cabin);
 		},
 		undefined,
 		function (error) {
