@@ -94,15 +94,6 @@ const createTreeRing = (count, distance) => {
 			Math.sin(angle) * distance
 		);
 
-		// if (random < 0.33) {
-		// 	randomTree.scale.y = random + 0.6;
-		// } else if (random < 0.66) {
-		// 	randomTree.scale.y = random + 0.5;
-		// } else {
-		// 	randomTree.scale.y = random;
-		// }
-		// scene.add(randomTree);
-
 		// set all trees same scale
 		randomTree.scale.set(1, 1, 1);
 		scene.add(randomTree);
@@ -162,25 +153,6 @@ controlsBanner();
 const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2();
 
-// Right-click to enter cabin
-window.addEventListener("contextmenu", (event) => {
-	event.preventDefault();
-	mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-	mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-
-	raycaster.setFromCamera(mouse, camera);
-	const intersects = raycaster.intersectObjects(cabins);
-
-	if (intersects.length > 0) {
-		selectedCabin = intersects[0].object;
-		controls.enabled = false; // Disable orbit controls
-		pointerLockControls.lock(); // Enable pointer lock controls
-		console.log("Cabin right-clicked:", selectedCabin);
-	}
-});
-
-let selectedCabin = null;
-
 // Pointer lock controls
 const pointerLockControls = new PointerLockControls(camera, document.body);
 
@@ -218,6 +190,9 @@ window.addEventListener("mousemove", (event) => {
 //resize
 resize(sizes, camera, renderer, composer);
 
+// Click to enter cabin
+let selectedCabin = null;
+
 window.addEventListener("click", (event) => {
 	mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
 	mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
@@ -226,7 +201,7 @@ window.addEventListener("click", (event) => {
 	const intersects = raycaster.intersectObjects(cabins);
 
 	if (intersects.length > 0) {
-		selectedCabin = intersects[0].object;
+		selectedCabin = intersects[0].object.parent;
 		controls.enabled = false; // Disable orbit controls
 		pointerLockControls.lock(); // Enable pointer lock controls
 		console.log("Cabin clicked:", selectedCabin);
@@ -248,20 +223,9 @@ window.addEventListener("keydown", (event) => {
 	}
 });
 
-// Clock for animation timing
-const clock = new THREE.Clock();
-
 //render
 function animate() {
 	requestAnimationFrame(animate);
-
-	// Animate tree leaves
-	scene.traverse((object) => {
-		if (object.isMesh && object.userData.isTree) {
-			const time = clock.getElapsedTime();
-			object.rotation.y = Math.sin(time * 0.5) * 0.1; // Swaying effect
-		}
-	});
 
 	if (!selectedCabin) {
 		controls.update();
@@ -294,7 +258,6 @@ function animate() {
 	// camera look at selected cabin
 	if (selectedCabin) {
 		camera.position.copy(selectedCabin.position);
-		camera.position.z += 1;
 
 		// camera in the cabin movement
 		const direction = new THREE.Vector3();
