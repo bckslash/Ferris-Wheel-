@@ -19,6 +19,10 @@ import controlsBanner from "./src/components/controls";
 
 import resize from "./src/utils/resize";
 import { Tree } from "./src/scene/tree";
+import { createIsland } from "./src/scene/island";
+
+// Load textures
+const textureLoader = new THREE.TextureLoader();
 
 //sizes
 const sizes = {
@@ -70,25 +74,8 @@ var physics = {
 // Wheel
 const { wheel, cabins, radius } = createWheel(scene);
 
-//create ground
-const ground = new THREE.Mesh(
-	new THREE.CylinderGeometry(20, 20, 1, 16),
-	new THREE.MeshStandardMaterial({ color: 0x00ff00 }) // Grass green color
-);
-// Load texture
-const textureLoader = new THREE.TextureLoader();
-const groundTexture = textureLoader.load("./assets/grass.jpg");
-groundTexture.wrapS = THREE.RepeatWrapping;
-groundTexture.wrapT = THREE.RepeatWrapping;
-groundTexture.repeat.set(5, 5);
-
-// Apply texture to ground material
-ground.material.map = groundTexture;
-ground.material.needsUpdate = true;
-
-ground.position.y = -6.2;
-ground.receiveShadow = true; // Enable shadows for the ground
-scene.add(ground);
+// Island
+createIsland(scene);
 
 // Create trees in two circles around the wheel
 const createTreeRing = (count, distance) => {
@@ -100,20 +87,24 @@ const createTreeRing = (count, distance) => {
 				? Tree.createTree()
 				: random < 0.66
 				? Tree.createPine()
-				: Tree.createOak();
+				: Tree.createAppleTree();
 		randomTree.position.set(
 			Math.cos(angle) * distance,
 			-6,
 			Math.sin(angle) * distance
 		);
 
-		if (random < 0.33) {
-			randomTree.scale.y = random + 0.6;
-		} else if (random < 0.66) {
-			randomTree.scale.y = random + 0.5;
-		} else {
-			randomTree.scale.y = random;
-		}
+		// if (random < 0.33) {
+		// 	randomTree.scale.y = random + 0.6;
+		// } else if (random < 0.66) {
+		// 	randomTree.scale.y = random + 0.5;
+		// } else {
+		// 	randomTree.scale.y = random;
+		// }
+		// scene.add(randomTree);
+
+		// set all trees same scale
+		randomTree.scale.set(1, 1, 1);
 		scene.add(randomTree);
 	}
 };
