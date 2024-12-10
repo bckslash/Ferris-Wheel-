@@ -75,8 +75,17 @@ const debugGUI = ({
 	otherSettings.open();
 
 	const postProcessingSettings = gui.addFolder("Post Processing Settings");
+
 	let params = {
-		pixelSize: 5,
+		pixelSize: Math.max(1, Math.floor(window.innerWidth / 384)),
+		/* Explanation:
+		 * - If window is 1920px wide: 1920/384 = 5 pixels
+		 * - If window is 768px wide: 768/384 = 2 pixels
+		 * - If window is 300px wide: Math.max(1, Math.floor(300/384)) = 1 pixel
+		 *
+		 * This creates a responsive scaling where pixels get larger on bigger screens
+		 * while ensuring they never get smaller than 1px on tiny screens
+		 */
 		normalEdgeStrength: 0.3,
 	};
 	postProcessingSettings

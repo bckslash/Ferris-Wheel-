@@ -14,14 +14,14 @@ const cabinTexture = textureLoader.load("/assets/wood.jpg");
 const createWheel = (scene) => {
 	const wheel1 = new THREE.Mesh(
 		new THREE.TorusGeometry(5, 0.15, 32, 10),
-		new THREE.MeshStandardMaterial({ map: wheelTexture })
+		new THREE.MeshPhongMaterial({ map: wheelTexture })
 	);
 	wheel1.castShadow = true; // Enable shadows for the wheel
 	wheel1.receiveShadow = true; // Enable shadows for the wheel
 
 	const wheel2 = new THREE.Mesh(
 		new THREE.TorusGeometry(5, 0.15, 32, 10),
-		new THREE.MeshStandardMaterial({ map: wheelTexture })
+		new THREE.MeshPhongMaterial({ map: wheelTexture })
 	);
 	wheel2.castShadow = true; // Enable shadows for the wheel
 	wheel2.receiveShadow = true; // Enable shadows for the wheel
@@ -38,7 +38,7 @@ const createWheel = (scene) => {
 	// Create center X support
 	const createX = () => {
 		const geometry = new THREE.CylinderGeometry(0.1, 0.1, 9.8);
-		const material = new THREE.MeshStandardMaterial({ color: 0x666666 });
+		const material = new THREE.MeshPhongMaterial({ color: 0x666666 });
 		const support1 = new THREE.Mesh(geometry, material);
 		const support2 = new THREE.Mesh(geometry, material);
 		support1.rotation.z = Math.PI / 4;
@@ -55,7 +55,7 @@ const createWheel = (scene) => {
 			0.2,
 			wheelDistanceZ * 3
 		);
-		const material = new THREE.MeshStandardMaterial({ color: 0x666666 });
+		const material = new THREE.MeshPhongMaterial({ color: 0x666666 });
 		const support = new THREE.Mesh(geometry, material);
 		support.rotation.x = Math.PI / 2;
 		support.castShadow = true;
@@ -65,7 +65,7 @@ const createWheel = (scene) => {
 	// Create legs
 	const createLegs = () => {
 		const legGeometry = new THREE.CylinderGeometry(0.1, 0.1, 6);
-		const legMaterial = new THREE.MeshStandardMaterial({ color: 0x666666 });
+		const legMaterial = new THREE.MeshPhongMaterial({ color: 0x666666 });
 		const legs = [];
 		for (let i = 0; i < 4; i++) {
 			const leg = new THREE.Mesh(legGeometry, legMaterial);
