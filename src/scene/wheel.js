@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 
 const wheelDistanceZ = 0.65; // Distance between the wheel and the cabins
 const wheelColor = 0x0077ff; // Color of the wheel
@@ -123,18 +124,20 @@ const createWheel = (scene) => {
 	legs.forEach((leg) => scene.add(leg));
 
 	//cabins
-	const numberOfCabins = 12;
+	const numberOfCabins = 10;
 	const radius = 5;
 	const cabins = [];
 
 	for (let i = 0; i < numberOfCabins; i++) {
-		const cabin = new THREE.Mesh(
-			new THREE.BoxGeometry(1.3, 1.2, 1.0),
-			new THREE.MeshStandardMaterial({
-				map: cabinTexture,
-				color: cabinColor,
-			})
-		);
+		// const cabin = new THREE.Mesh(
+		// 	new THREE.BoxGeometry(1.3, 1.2, 1.0),
+		// 	new THREE.MeshStandardMaterial({
+		// 		map: cabinTexture,
+		// 		color: cabinColor,
+		// 	})
+		// );
+
+		const cabin = createCabin();
 		const angle = (i / numberOfCabins) * Math.PI * 2;
 		cabin.position.set(
 			Math.cos(angle) * radius,
@@ -151,5 +154,42 @@ const createWheel = (scene) => {
 
 	return { wheel, cabins, radius };
 };
+
+function createCabin() {
+	const cabin = new THREE.Group();
+
+	// Load GLB model
+	const loader = new GLTFLoader();
+	loader.load(
+		"/models/car.glb",
+		function (gltf) {
+			cabin.add(gltf.scene);
+			gltf.scene.traverse((child) => {
+				if (child.isMesh) {
+					child.castShadow = true;
+					child.receiveShadow = true;
+				}
+
+				// Apply colors based on the part name
+				if (child.parent && child.parent.name === "body") {
+					child.material = child.material.clone(); // Clone material
+					child.material.color.setHex(0xff0000); // Red for car body
+				} else if (child.parent && child.parent.name === "front") {
+					child.material = child.material.clone();
+					child.material.color.setHex(0x0000ff); // Blue for front part
+				} else if (child.parent && child.parent.name === "wheels") {
+					child.material = child.material.clone();
+					child.material.color.setHex(0x000000); // Dark gray for wheels
+				}
+			});
+		},
+		undefined,
+		function (error) {
+			console.error("Error loading GLB model:", error);
+		}
+	);
+
+	return cabin;
+}
 
 export default createWheel;
