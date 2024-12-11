@@ -199,12 +199,21 @@ window.addEventListener("click", (event) => {
 
 	raycaster.setFromCamera(mouse, camera);
 	const intersects = raycaster.intersectObjects(cabins);
+	const sceneIntersects = raycaster.intersectObjects(scene.children, true); // Check all children in the scene
 
+	// Select the cabin when clicked
 	if (intersects.length > 0) {
 		selectedCabin = intersects[0].object.parent;
 		controls.enabled = false; // Disable orbit controls
 		pointerLockControls.lock(); // Enable pointer lock controls
 		console.log("Cabin clicked:", selectedCabin);
+	}
+
+	// Log the intersection point in the scene
+	if (sceneIntersects.length > 0) {
+		const sceneIntersect = sceneIntersects[0];
+		const point = sceneIntersect.point;
+		console.log(`x=${point.x},\n y=${point.y},\n z=${point.z}`);
 	}
 });
 
