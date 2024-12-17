@@ -208,9 +208,8 @@ window.addEventListener("click", (event) => {
 		pointerLockControls.lock(); // Enable pointer lock controls
 		console.log("Cabin clicked:", selectedCabin);
 	}
-
 	// Log the intersection point in the scene
-	if (sceneIntersects.length > 0) {
+	else if (sceneIntersects.length > 0) {
 		const sceneIntersect = sceneIntersects[0];
 		const point = sceneIntersect.point;
 		console.log(`x=${point.x},\n y=${point.y},\n z=${point.z}`);

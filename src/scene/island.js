@@ -27,6 +27,26 @@ function createIsland(scene) {
 	const grassGroup = grass();
 	grassGroup.position.y = -6.1;
 	scene.add(grassGroup);
+
+	// Add ticket booth
+	const ticketBooth = ticket_booth();
+	ticketBooth.position.set(3, -5.7, 6.6);
+	scene.add(ticketBooth);
+
+	// Add fence
+	const fence1 = fence();
+	const fence2 = fence();
+	fence1.position.set(-1.5, -5.7, 5);
+	fence2.position.set(1.5, -5.7, 5);
+	const fenceGroup = new THREE.Group();
+	fenceGroup.add(fence1);
+	fenceGroup.add(fence2);
+	scene.add(fenceGroup);
+
+	// Add food cart
+	const foodCart = food_cart();
+	foodCart.position.set(-3.3, -5.7, 6);
+	scene.add(foodCart);
 }
 
 function grass() {
@@ -74,6 +94,99 @@ function grass() {
 	);
 
 	return grass;
+}
+
+function ticket_booth() {
+	const ticket_booth = new THREE.Group();
+
+	// Load GLB model
+	const loader = new GLTFLoader();
+	loader.load(
+		"/models/ticket_booth.glb",
+		function (gltf) {
+			ticket_booth.add(gltf.scene);
+			gltf.scene.traverse((child) => {
+				if (child.isMesh) {
+					child.castShadow = true;
+					child.receiveShadow = true;
+				}
+			});
+
+			// Scale the
+			ticket_booth.scale.set(0.5, 0.5, 0.5);
+
+			// rotate 180
+			ticket_booth.rotation.y = Math.PI;
+		},
+		undefined,
+		function (error) {
+			console.error("Error loading GLB model:", error);
+		}
+	);
+
+	return ticket_booth;
+}
+
+function fence() {
+	const fence = new THREE.Group();
+
+	// Load GLB model
+	const loader = new GLTFLoader();
+	loader.load(
+		"/models/fence.glb",
+		function (gltf) {
+			fence.add(gltf.scene);
+			gltf.scene.traverse((child) => {
+				if (child.isMesh) {
+					child.castShadow = true;
+					child.receiveShadow = true;
+				}
+			});
+
+			// Scale the
+			// fence.scale.set(0.5, 0.5, 0.5);
+
+			// rotate 90
+			fence.rotation.y = Math.PI / 2;
+		},
+		undefined,
+		function (error) {
+			console.error("Error loading GLB model:", error);
+		}
+	);
+
+	return fence;
+}
+
+function food_cart() {
+	const food_cart = new THREE.Group();
+
+	// Load GLB model
+	const loader = new GLTFLoader();
+	loader.load(
+		"/models/food_cart.glb",
+		function (gltf) {
+			food_cart.add(gltf.scene);
+			gltf.scene.traverse((child) => {
+				if (child.isMesh) {
+					child.castShadow = true;
+					child.receiveShadow = true;
+				}
+			});
+
+			// Scale the
+			food_cart.scale.set(0.8, 0.8, 0.8);
+
+			// rotate 90
+			food_cart.rotation.y = Math.PI / 2;
+		},
+		undefined,
+		function (error) {
+			console.error("Error loading GLB model:", error);
+		}
+	);
+
+	return food_cart;
 }
 
 export { createIsland };
