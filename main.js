@@ -127,7 +127,7 @@ controls.target.set(wheel.position.x, wheel.position.y, wheel.position.z);
 controls.update();
 
 // Setup lights
-const { light, light2, light3, lightMarkersGroup } = setupLights(scene);
+const { light, sunLight, sunLightMarker } = setupLights(scene);
 
 // Create axes
 const axes = new THREE.AxesHelper(5);
@@ -136,8 +136,7 @@ scene.add(axes);
 // Setup GUI
 debugGUI({
 	physics,
-	lights: { light, light2, light3 },
-	lightMarkersGroup,
+	lights: { light, sunLight, sunLightMarker },
 	scene,
 	axes,
 	renderPixelatedPass,
@@ -193,6 +192,8 @@ resize(sizes, camera, renderer, composer);
 // Click to enter cabin
 let selectedCabin = null;
 
+// Pointer lock controls
+
 window.addEventListener("click", (event) => {
 	mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
 	mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
@@ -206,10 +207,47 @@ window.addEventListener("click", (event) => {
 		selectedCabin = intersects[0].object.parent;
 		controls.enabled = false; // Disable orbit controls
 		pointerLockControls.lock(); // Enable pointer lock controls
+		console.log("Cabin position:", selectedCabin.position);
 		console.log("Cabin clicked:", selectedCabin);
 	}
 	// Log the intersection point in the scene
-	else if (sceneIntersects.length > 0) {
+	if (sceneIntersects.length > 0) {
+		const sceneIntersect = sceneIntersects[0];
+		const point = sceneIntersect.point;
+		console.log(`x=${point.x},\n y=${point.y},\n z=${point.z}`);
+	}
+});
+
+window.addEventListener("click", (event) => {
+	mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+	mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+	raycaster.setFromCamera(mouse, camera);
+	const intersects = raycaster.intersectObjects(cabins);
+	const sceneIntersects = raycaster.intersectObjects(scene.children, true); // Check all children in the scene
+
+	// Select the cabin when clicked
+
+	if (intersects.length > 0) {
+		// Find the highest-level cabin group
+		let cabin = intersects[0].object;
+		while (cabin.parent && !cabins.includes(cabin)) {
+			cabin = cabin.parent;
+		}
+
+		if (cabins.includes(cabin)) {
+			selectedCabin = cabin;
+			controls.enabled = false; // Disable orbit controls
+			pointerLockControls.lock(); // Enable pointer lock controls
+
+			// Get cabin's world position
+			const cabinWorldPosition = new THREE.Vector3();
+			selectedCabin.getWorldPosition(cabinWorldPosition);
+			console.log("Cabin world position:", cabinWorldPosition);
+		}
+	}
+	// Log the intersection point in the scene
+	if (sceneIntersects.length > 0) {
 		const sceneIntersect = sceneIntersects[0];
 		const point = sceneIntersect.point;
 		console.log(`x=${point.x},\n y=${point.y},\n z=${point.z}`);
@@ -265,9 +303,13 @@ function animate() {
 
 	// camera look at selected cabin
 	if (selectedCabin) {
-		camera.position.copy(selectedCabin.position);
+		const cabinWorldPosition = new THREE.Vector3();
+		selectedCabin.getWorldPosition(cabinWorldPosition);
 
-		// camera in the cabin movement
+		// Copy cabin's world position to the camera
+		camera.position.copy(cabinWorldPosition);
+
+		// Adjust camera orientation
 		const direction = new THREE.Vector3();
 		camera.getWorldDirection(direction);
 		camera.lookAt(camera.position.clone().add(direction));

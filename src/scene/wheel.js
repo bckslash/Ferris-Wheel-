@@ -139,14 +139,18 @@ const createWheel = (scene) => {
 
 		const cabin = createCabin();
 
+		// Store the original angle for rotation reference
 		const angle = (i / numberOfCabins) * Math.PI * 2;
+		cabin.userData.angle = angle;
+		cabin.userData.swing = Math.random() * Math.PI * 2; // Random starting swing angle
+
+		// Initially position the cabin (will be updated in the animation loop)
 		cabin.position.set(
 			Math.cos(angle) * radius,
 			Math.sin(angle) * radius,
 			0
 		);
-		cabin.userData.angle = angle; // Store the original angle for rotation reference
-		cabin.userData.swing = Math.random() * Math.PI * 2; // Random starting swing angle
+
 		cabins.push(cabin);
 		scene.add(cabin);
 	}
@@ -163,7 +167,7 @@ function createCabin() {
 		"/models/cabin_generated.glb",
 		function (gltf) {
 			const model = gltf.scene;
-			gltf.scene.traverse((child) => {
+			model.traverse((child) => {
 				if (child.isMesh) {
 					child.castShadow = true;
 					child.receiveShadow = true;
@@ -176,6 +180,7 @@ function createCabin() {
 
 			// Scale the cabin
 			model.scale.set(0.9, 0.9, 0.9);
+			model.position.set(0, 0, 0);
 
 			// Add the model to the cabin group
 			cabin.add(model);

@@ -1,48 +1,51 @@
 import * as THREE from "three";
 
 const setupLights = (scene) => {
-	// Create a group for light markers
-	const lightMarkersGroup = new THREE.Group();
-	scene.add(lightMarkersGroup);
-
 	// Function to create light markers
 	function createLightMarker(position) {
 		const marker = new THREE.Mesh(
-			new THREE.SphereGeometry(0.5, 16, 16),
+			new THREE.SphereGeometry(5, 16, 16),
 			new THREE.MeshBasicMaterial({ color: 0xffff00 })
 		);
 		marker.position.copy(position);
-		lightMarkersGroup.add(marker);
+		return marker;
 	}
+
+	// Sun Light
+	const sunLight = new THREE.DirectionalLight(0xffffff, 1);
+	sunLight.position.set(0, 35, 30);
+	sunLight.castShadow = true; // Enable shadows for the sun light
+	sunLight.shadow.mapSize.width = 4096; // Adjust shadow map size
+	sunLight.shadow.mapSize.height = 4096; // Adjust shadow map size
+
+	// Configure shadow camera
+	const d = 100;
+	sunLight.shadow.camera.left = -d;
+	sunLight.shadow.camera.right = d;
+	sunLight.shadow.camera.top = d;
+	sunLight.shadow.camera.bottom = -d;
+	sunLight.shadow.camera.near = 0.1;
+	sunLight.shadow.camera.far = 500;
+
+	scene.add(sunLight);
+
+	const sunLightMarker = createLightMarker(sunLight.position);
+	scene.add(sunLightMarker);
+	// const sunLightHelper = new THREE.DirectionalLightHelper(sunLight, 10);
+	// scene.add(sunLightHelper);
 
 	// Light 1
 	const light = new THREE.PointLight(0xffffff, 100, 100);
-	light.position.set(0, 10, 10);
+	light.position.set(0, 15, 0);
 	light.castShadow = true; // Enable shadows for this light
 	light.shadow.mapSize.width = 1024; // Optional: Adjust shadow map size
 	light.shadow.mapSize.height = 1024; // Optional: Adjust shadow map size
 	scene.add(light);
-	createLightMarker(light.position);
 
-	// Light 2
-	const light2 = new THREE.PointLight(0xffffff, 100, 100);
-	light2.position.set(0, 15, 0);
-	light.castShadow = true; // Enable shadows for this light
-	light.shadow.mapSize.width = 1024; // Optional: Adjust shadow map size
-	light.shadow.mapSize.height = 1024; // Optional: Adjust shadow map size
-	scene.add(light2);
-	createLightMarker(light2.position);
+	// const lightHelper = new THREE.PointLightHelper(light, 10);
+	// scene.add(lightHelper);
 
-	// Light 3
-	const light3 = new THREE.PointLight(0xffffff, 100, 100);
-	light3.position.set(0, -10, 20);
-	light.castShadow = true; // Enable shadows for this light
-	light.shadow.mapSize.width = 1024; // Optional: Adjust shadow map size
-	light.shadow.mapSize.height = 1024; // Optional: Adjust shadow map size
-	scene.add(light3);
-	createLightMarker(light3.position);
-
-	return { light, light2, light3, lightMarkersGroup };
+	return { light, sunLight, sunLightMarker };
 };
 
 export default setupLights;

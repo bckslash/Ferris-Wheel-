@@ -1,9 +1,9 @@
 import GUI from "lil-gui";
+import * as THREE from "three";
 
 const debugGUI = ({
 	physics,
-	lights: { light, light2, light3 },
-	lightMarkersGroup,
+	lights: { light, sunLight, sunLightMarker },
 	scene,
 	axes,
 	renderPixelatedPass,
@@ -29,8 +29,9 @@ const debugGUI = ({
 	const lightFolder = gui.addFolder("Light Settings");
 	const lightSettings = {
 		lightIntensity_1: light.intensity,
-		lightIntensity_2: light2.intensity,
-		lightIntensity_3: light3.intensity,
+		sunIntensity: sunLight.intensity,
+		azimuth: 0, // Horizontal angle
+		elevation: 45, // Vertical angle
 	};
 
 	lightFolder
@@ -39,24 +40,41 @@ const debugGUI = ({
 		.onChange((value) => {
 			light.intensity = value;
 		})
-		.setValue(200);
+		.setValue(0);
 
 	lightFolder
-		.add(lightSettings, "lightIntensity_2", 0, 200)
-		.name("Light 2 Intensity")
+		.add(lightSettings, "sunIntensity", 0, 4)
+		.name("Sun Light Intensity")
 		.onChange((value) => {
-			light2.intensity = value;
+			sunLight.intensity = value;
 		})
-		.setValue(200);
+		.setValue(sunLight.intensity);
 
 	lightFolder
-		.add(lightSettings, "lightIntensity_3", 0, 200)
-		.name("Light 3 Intensity")
-		.onChange((value) => {
-			light3.intensity = value;
-		})
-		.setValue(20);
+		.add(lightSettings, "azimuth", -180, 180)
+		.name("Sun Azimuth")
+		.onChange(updateSunLightPosition);
+
+	lightFolder
+		.add(lightSettings, "elevation", 0, 90)
+		.name("Sun Elevation")
+		.onChange(updateSunLightPosition);
+
 	lightFolder.open();
+
+	function updateSunLightPosition() {
+		const azimuth = THREE.MathUtils.degToRad(lightSettings.azimuth);
+		const elevation = THREE.MathUtils.degToRad(lightSettings.elevation);
+		const radius = 100; // Distance from the origin
+
+		sunLight.position.set(
+			radius * Math.cos(elevation) * Math.sin(azimuth),
+			radius * Math.sin(elevation),
+			radius * Math.cos(elevation) * Math.cos(azimuth)
+		);
+		sunLight.target.position.set(0, 0, 0);
+		sunLight.target.updateMatrixWorld();
+	}
 
 	const otherSettings = gui.addFolder("Other Settings");
 	otherSettings.add(scene, "visible").name("Show Scene");
@@ -67,11 +85,11 @@ const debugGUI = ({
 	};
 	otherSettings
 		.add(lightMarkersSettings, "showLightMarkers")
-		.name("Show Light Markers")
+		.name("Show Sun")
 		.onChange((value) => {
 			lightMarkersGroup.visible = value;
 		})
-		.setValue(false);
+		.setValue(true);
 	otherSettings.open();
 
 	const postProcessingSettings = gui.addFolder("Post Processing Settings");
@@ -106,6 +124,23 @@ const debugGUI = ({
 	postProcessingSettings.open();
 
 	gui.close();
+
+	function updateSunLightPosition() {
+		const azimuth = THREE.MathUtils.degToRad(lightSettings.azimuth);
+		const elevation = THREE.MathUtils.degToRad(lightSettings.elevation);
+		const radius = 100; // Distance from the origin
+
+		sunLight.position.set(
+			radius * Math.cos(elevation) * Math.sin(azimuth),
+			radius * Math.sin(elevation),
+			radius * Math.cos(elevation) * Math.cos(azimuth)
+		);
+		sunLight.target.position.set(0, 0, 0);
+		sunLight.target.updateMatrixWorld();
+
+		// Update the sun light marker position
+		sunLightMarker.position.copy(sunLight.position);
+	}
 
 	return physics;
 };

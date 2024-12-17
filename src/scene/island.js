@@ -145,6 +145,13 @@ function fence() {
 				if (child.isMesh) {
 					child.castShadow = true;
 					child.receiveShadow = true;
+					console.log(child);
+				}
+
+				// Apply color
+				if (child.parent && child.parent.name.includes("Fence01")) {
+					child.material = child.material.clone(); // Clone material
+					child.material.color.setHex(0x8b4513); // Brown color for fence
 				}
 			});
 
