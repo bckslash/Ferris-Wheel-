@@ -45,8 +45,13 @@ function createIsland(scene) {
 
 	// Add food cart
 	const foodCart = food_cart();
-	foodCart.position.set(-3.3, -5.7, 6);
+	foodCart.position.set(-2, -5.7, 6);
 	scene.add(foodCart);
+
+	// Add autodrom
+	const autodrom1 = autodrom();
+	autodrom1.position.set(0, -5.7, -7);
+	scene.add(autodrom1);
 }
 
 function grass() {
@@ -175,7 +180,7 @@ function food_cart() {
 			});
 
 			// Scale the
-			food_cart.scale.set(0.8, 0.8, 0.8);
+			food_cart.scale.set(0.5, 0.5, 0.5);
 
 			// rotate 90
 			food_cart.rotation.y = Math.PI / 2;
@@ -187,6 +192,37 @@ function food_cart() {
 	);
 
 	return food_cart;
+}
+
+function autodrom() {
+	const autodrom = new THREE.Group();
+
+	// Load GLB model
+	const loader = new GLTFLoader();
+	loader.load(
+		"/models/autodrom.glb",
+		function (gltf) {
+			autodrom.add(gltf.scene);
+			gltf.scene.traverse((child) => {
+				if (child.isMesh) {
+					child.castShadow = true;
+					child.receiveShadow = true;
+				}
+			});
+
+			// Scale the
+			autodrom.scale.set(0.25, 0.25, 0.25);
+
+			// rotate 90
+			autodrom.rotation.y = -Math.PI / 2;
+		},
+		undefined,
+		function (error) {
+			console.error("Error loading GLB model:", error);
+		}
+	);
+
+	return autodrom;
 }
 
 export { createIsland };
