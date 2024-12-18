@@ -4,7 +4,6 @@ const githubBanner = () => {
 	banner.style.top = "10px";
 	banner.style.left = "10px";
 	banner.style.padding = "5px";
-	banner.style.backgroundColor = "black";
 	banner.style.borderRadius = "3px";
 	banner.innerHTML = `
     <a href="https://github.com/bckslash/Ferris-Wheel" target="_blank" style="text-decoration: none;">
