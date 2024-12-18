@@ -13,7 +13,7 @@ const setupLights = (scene) => {
 
 	// Sun Light
 	const sunLight = new THREE.DirectionalLight(0xffffff, 1);
-	sunLight.position.set(0, 35, 30);
+	sunLight.position.set(0, 45, 30);
 	sunLight.castShadow = true; // Enable shadows for the sun light
 	sunLight.shadow.mapSize.width = 4096; // Adjust shadow map size
 	sunLight.shadow.mapSize.height = 4096; // Adjust shadow map size

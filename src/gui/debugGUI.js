@@ -31,7 +31,7 @@ const debugGUI = ({
 		lightIntensity_1: light.intensity,
 		sunIntensity: sunLight.intensity,
 		azimuth: 0, // Horizontal angle
-		elevation: 45, // Vertical angle
+		elevation: 30, // Vertical angle
 	};
 
 	lightFolder
@@ -56,7 +56,7 @@ const debugGUI = ({
 		.onChange(updateSunLightPosition);
 
 	lightFolder
-		.add(lightSettings, "elevation", 0, 90)
+		.add(lightSettings, "elevation", 0, 360)
 		.name("Sun Elevation")
 		.onChange(updateSunLightPosition);
 
@@ -65,7 +65,7 @@ const debugGUI = ({
 	function updateSunLightPosition() {
 		const azimuth = THREE.MathUtils.degToRad(lightSettings.azimuth);
 		const elevation = THREE.MathUtils.degToRad(lightSettings.elevation);
-		const radius = 100; // Distance from the origin
+		const radius = 80; // Distance from the origin
 
 		sunLight.position.set(
 			radius * Math.cos(elevation) * Math.sin(azimuth),
@@ -74,6 +74,9 @@ const debugGUI = ({
 		);
 		sunLight.target.position.set(0, 0, 0);
 		sunLight.target.updateMatrixWorld();
+
+		// Update the sun light marker position
+		sunLightMarker.position.copy(sunLight.position);
 	}
 
 	const otherSettings = gui.addFolder("Other Settings");
@@ -124,23 +127,6 @@ const debugGUI = ({
 	postProcessingSettings.open();
 
 	gui.close();
-
-	function updateSunLightPosition() {
-		const azimuth = THREE.MathUtils.degToRad(lightSettings.azimuth);
-		const elevation = THREE.MathUtils.degToRad(lightSettings.elevation);
-		const radius = 100; // Distance from the origin
-
-		sunLight.position.set(
-			radius * Math.cos(elevation) * Math.sin(azimuth),
-			radius * Math.sin(elevation),
-			radius * Math.cos(elevation) * Math.cos(azimuth)
-		);
-		sunLight.target.position.set(0, 0, 0);
-		sunLight.target.updateMatrixWorld();
-
-		// Update the sun light marker position
-		sunLightMarker.position.copy(sunLight.position);
-	}
 
 	return physics;
 };
