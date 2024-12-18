@@ -20,9 +20,6 @@ const debugGUI = ({
 		.add(physics, "rotationSpeed", -0.2, 0.2)
 		.name("Rotation Speed");
 
-	physicsFolder
-		.add(physics, "wheelAnimationSpeed", -10, 10)
-		.name("Wheel Animation Speed");
 	physicsFolder.open();
 
 	// Add control for light intensity
@@ -58,6 +55,11 @@ const debugGUI = ({
 	lightFolder
 		.add(lightSettings, "elevation", 0, 360)
 		.name("Sun Elevation")
+		.onChange(updateSunLightPosition);
+
+	lightFolder
+		.add(lightSettings, "azimuth", -180, 180)
+		.name("Sun Azimuth")
 		.onChange(updateSunLightPosition);
 
 	lightFolder.open();
