@@ -25,15 +25,15 @@ const debugGUI = ({
 	// Add control for light intensity
 	const lightFolder = gui.addFolder("Light Settings");
 	const lightSettings = {
-		lightIntensity_1: light.intensity,
+		lightIntensity: light.intensity,
 		sunIntensity: sunLight.intensity,
 		azimuth: 0, // Horizontal angle
 		elevation: 30, // Vertical angle
 	};
 
 	lightFolder
-		.add(lightSettings, "lightIntensity_1", 0, 200)
-		.name("Light 1 Intensity")
+		.add(lightSettings, "lightIntensity", 0, 200)
+		.name("Light Intensity")
 		.onChange((value) => {
 			light.intensity = value;
 		})
