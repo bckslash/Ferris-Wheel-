@@ -191,9 +191,10 @@ resize(sizes, camera, renderer, composer);
 
 // Click to enter cabin
 let selectedCabin = null;
+const cabinWorldPosition = new THREE.Vector3();
+const direction = new THREE.Vector3();
 
 // Pointer lock controls
-
 window.addEventListener("click", (event) => {
 	mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
 	mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
@@ -303,16 +304,12 @@ function animate() {
 
 	// camera look at selected cabin
 	if (selectedCabin) {
-		const cabinWorldPosition = new THREE.Vector3();
 		selectedCabin.getWorldPosition(cabinWorldPosition);
-
-		// Copy cabin's world position to the camera
 		camera.position.copy(cabinWorldPosition);
 
-		// Adjust camera orientation
-		const direction = new THREE.Vector3();
 		camera.getWorldDirection(direction);
-		camera.lookAt(camera.position.clone().add(direction));
+		direction.add(camera.position);
+		camera.lookAt(direction);
 	}
 
 	composer.render();
