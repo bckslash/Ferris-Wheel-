@@ -155,7 +155,7 @@ function fence() {
 				}
 			});
 
-			// Scale the
+			// Scale
 			// fence.scale.set(0.5, 0.5, 0.5);
 
 			// rotate 90
