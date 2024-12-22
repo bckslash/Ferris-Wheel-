@@ -1,5 +1,6 @@
 import GUI from "lil-gui";
 import * as THREE from "three";
+import { updateWheelColor, updateCabinColor } from "../scene/wheel.js";
 
 const debugGUI = ({
 	physics,
@@ -55,11 +56,6 @@ const debugGUI = ({
 	lightFolder
 		.add(lightSettings, "elevation", 0, 360)
 		.name("Sun Elevation")
-		.onChange(updateSunLightPosition);
-
-	lightFolder
-		.add(lightSettings, "azimuth", -180, 180)
-		.name("Sun Azimuth")
 		.onChange(updateSunLightPosition);
 
 	lightFolder.open();
@@ -127,6 +123,102 @@ const debugGUI = ({
 		.step(0.05);
 
 	postProcessingSettings.open();
+
+	const colorSettings = {
+		wheelColor: "#0077ff",
+		cabinColor: "#ffa500",
+	};
+
+	const colorFolder = gui.addFolder("Color Settings");
+	colorFolder
+		.addColor(colorSettings, "wheelColor")
+		.name("Wheel Color")
+		.onChange((value) => {
+			updateWheelColor(value);
+		});
+
+	colorFolder
+		.addColor(colorSettings, "cabinColor")
+		.name("Cabin Color")
+		.onChange((value) => {
+			updateCabinColor(value);
+		});
+
+	colorFolder.open();
+
+	const exportSettings = {
+		export: () => {
+			const settings = {
+				physics: {
+					swingAmplitude: physics.swingAmplitude,
+					swingSpeed: physics.swingSpeed,
+					rotationSpeed: physics.rotationSpeed,
+				},
+				lightSettings: {
+					lightIntensity: light.intensity,
+					sunIntensity: sunLight.intensity,
+					azimuth: lightSettings.azimuth,
+					elevation: lightSettings.elevation,
+					timeOfDay: lightSettings.timeOfDay,
+				},
+				sceneVisible: scene.visible,
+				axesVisible: axes.visible,
+				showLightMarkers: lightMarkersSettings.showLightMarkers,
+				postProcessing: {
+					pixelSize: params.pixelSize,
+					normalEdgeStrength: renderPixelatedPass.normalEdgeStrength,
+				},
+				colorSettings: {
+					wheelColor: colorSettings.wheelColor,
+					cabinColor: colorSettings.cabinColor,
+				},
+			};
+			const dataStr =
+				"data:text/json;charset=utf-8," +
+				encodeURIComponent(JSON.stringify(settings));
+			const downloadAnchorNode = document.createElement("a");
+			downloadAnchorNode.setAttribute("href", dataStr);
+			downloadAnchorNode.setAttribute("download", "settings.json");
+			document.body.appendChild(downloadAnchorNode);
+			downloadAnchorNode.click();
+			downloadAnchorNode.remove();
+		},
+		import: (event) => {
+			const file = event.target.files[0];
+			const reader = new FileReader();
+			reader.onload = (e) => {
+				const settings = JSON.parse(e.target.result);
+				Object.assign(physics, settings.physics);
+				Object.assign(lightSettings, settings.lightSettings);
+				scene.visible = settings.sceneVisible;
+				axes.visible = settings.axesVisible;
+				lightMarkersSettings.showLightMarkers =
+					settings.showLightMarkers;
+				Object.assign(params, settings.postProcessing);
+				Object.assign(colorSettings, settings.colorSettings);
+				updateWheelColor(colorSettings.wheelColor);
+				updateCabinColor(colorSettings.cabinColor);
+				updateSunLightPosition();
+				updateSunLightPositionByTime();
+				renderPixelatedPass.setPixelSize(params.pixelSize);
+				gui.updateDisplay();
+			};
+			reader.readAsText(file);
+		},
+	};
+
+	const exportFolder = gui.addFolder("Export/Import Settings");
+	exportFolder.add(exportSettings, "export").name("Export Settings");
+	const importInput = document.createElement("input");
+	importInput.type = "file";
+	importInput.accept = ".json";
+	importInput.style.display = "none";
+	importInput.addEventListener("change", exportSettings.import);
+	document.body.appendChild(importInput);
+	exportFolder
+		.add({ import: () => importInput.click() }, "import")
+		.name("Import Settings");
+	exportFolder.open();
 
 	gui.close();
 

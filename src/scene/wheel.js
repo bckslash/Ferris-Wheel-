@@ -11,17 +11,26 @@ const textureLoader = new THREE.TextureLoader();
 const wheelTexture = textureLoader.load("/assets/metal.jpg");
 const cabinTexture = textureLoader.load("/assets/wood.jpg");
 
+let wheelMaterial = new THREE.MeshPhongMaterial({
+	map: wheelTexture,
+	color: wheelColor,
+});
+let cabinMaterial = new THREE.MeshStandardMaterial({
+	map: cabinTexture,
+	color: cabinColor,
+});
+
 const createWheel = (scene) => {
 	const wheel1 = new THREE.Mesh(
 		new THREE.TorusGeometry(5, 0.15, 32, 10),
-		new THREE.MeshPhongMaterial({ map: wheelTexture })
+		wheelMaterial
 	);
 	wheel1.castShadow = true; // Enable shadows for the wheel
 	wheel1.receiveShadow = true; // Enable shadows for the wheel
 
 	const wheel2 = new THREE.Mesh(
 		new THREE.TorusGeometry(5, 0.15, 32, 10),
-		new THREE.MeshPhongMaterial({ map: wheelTexture })
+		wheelMaterial
 	);
 	wheel2.castShadow = true; // Enable shadows for the wheel
 	wheel2.receiveShadow = true; // Enable shadows for the wheel
@@ -171,10 +180,7 @@ function createCabin() {
 				if (child.isMesh) {
 					child.castShadow = true;
 					child.receiveShadow = true;
-					child.material = new THREE.MeshStandardMaterial({
-						map: cabinTexture,
-						color: cabinColor,
-					});
+					child.material = cabinMaterial;
 				}
 			});
 
@@ -192,6 +198,14 @@ function createCabin() {
 	);
 
 	return cabin;
+}
+
+export function updateWheelColor(color) {
+	wheelMaterial.color.set(color);
+}
+
+export function updateCabinColor(color) {
+	cabinMaterial.color.set(color);
 }
 
 export default createWheel;
