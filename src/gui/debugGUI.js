@@ -199,7 +199,6 @@ const debugGUI = ({
 				updateWheelColor(colorSettings.wheelColor);
 				updateCabinColor(colorSettings.cabinColor);
 				updateSunLightPosition();
-				updateSunLightPositionByTime();
 				renderPixelatedPass.setPixelSize(params.pixelSize);
 				gui.updateDisplay();
 			};
