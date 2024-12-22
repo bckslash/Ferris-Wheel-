@@ -8,6 +8,7 @@ const debugGUI = ({
 	scene,
 	axes,
 	renderPixelatedPass,
+	skybox,
 }) => {
 	// GUI
 	const gui = new GUI();
@@ -91,6 +92,34 @@ const debugGUI = ({
 			lightMarkersGroup.visible = value;
 		})
 		.setValue(true);
+
+	const skyboxSettings = {
+		changeSkybox: () => {
+			const input = document.createElement("input");
+			input.type = "file";
+			input.accept = "image/*";
+			input.onchange = (event) => {
+				const file = event.target.files[0];
+				const reader = new FileReader();
+				reader.onload = (e) => {
+					const texture = new THREE.TextureLoader().load(
+						e.target.result,
+						(texture) => {
+							skybox.material.map = texture;
+							skybox.material.needsUpdate = true;
+						}
+					);
+				};
+				reader.readAsDataURL(file);
+			};
+			input.click();
+		},
+	};
+
+	otherSettings
+		.add(skyboxSettings, "changeSkybox")
+		.name("Change Skybox Image");
+
 	otherSettings.open();
 
 	const postProcessingSettings = gui.addFolder("Post Processing Settings");
