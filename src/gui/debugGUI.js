@@ -9,6 +9,7 @@ const debugGUI = ({
 	axes,
 	renderPixelatedPass,
 	skybox,
+	camera,
 }) => {
 	// GUI
 	const gui = new GUI();
@@ -188,7 +189,6 @@ const debugGUI = ({
 					sunIntensity: sunLight.intensity,
 					azimuth: lightSettings.azimuth,
 					elevation: lightSettings.elevation,
-					timeOfDay: lightSettings.timeOfDay,
 				},
 				sceneVisible: scene.visible,
 				axesVisible: axes.visible,
@@ -200,6 +200,11 @@ const debugGUI = ({
 				colorSettings: {
 					wheelColor: colorSettings.wheelColor,
 					cabinColor: colorSettings.cabinColor,
+					cameraPosition: {
+						x: camera.position.x,
+						y: camera.position.y,
+						z: camera.position.z,
+					},
 				},
 			};
 			const dataStr =
@@ -219,6 +224,8 @@ const debugGUI = ({
 				const settings = JSON.parse(e.target.result);
 				Object.assign(physics, settings.physics);
 				Object.assign(lightSettings, settings.lightSettings);
+				light.intensity = lightSettings.lightIntensity;
+				sunLight.intensity = lightSettings.sunIntensity;
 				scene.visible = settings.sceneVisible;
 				axes.visible = settings.axesVisible;
 				lightMarkersSettings.showLightMarkers =
@@ -229,6 +236,11 @@ const debugGUI = ({
 				updateCabinColor(colorSettings.cabinColor);
 				updateSunLightPosition();
 				renderPixelatedPass.setPixelSize(params.pixelSize);
+				camera.position.set(
+					settings.colorSettings.cameraPosition.x,
+					settings.colorSettings.cameraPosition.y,
+					settings.colorSettings.cameraPosition.z
+				);
 				gui.updateDisplay();
 			};
 			reader.readAsText(file);

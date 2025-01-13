@@ -141,6 +141,7 @@ debugGUI({
 	axes,
 	renderPixelatedPass,
 	skybox,
+	camera,
 });
 
 //Github Link Banner
