@@ -15,7 +15,7 @@ import debugGUI from "./src/gui/debugGUI";
 
 import githubBanner from "./src/components/githubBanner";
 import controlsBanner from "./src/components/controls";
-// import GLTFwheel from "./src/scene/GLTFwheel";
+import aboutButton from "./src/components/aboutButton";
 
 import resize from "./src/utils/resize";
 import { Tree } from "./src/scene/tree";
@@ -149,6 +149,9 @@ githubBanner();
 
 // Controls banner
 controlsBanner();
+
+// About Button
+aboutButton();
 
 // Raycasting for selecting cabins
 const raycaster = new THREE.Raycaster();
