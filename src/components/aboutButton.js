@@ -15,7 +15,7 @@ const aboutButton = () => {
 
 	const modal = document.createElement("div");
 	modal.innerHTML =
-		"Robert Smrek<br/>Dušan Mikloš<br/><br/>KPI FEI TUKE<br/>2024/2025";
+		"Počítačová Grafika<br><br/>Robert Smrek<br/>Dušan Mikloš<br/><br/>KPI FEI TUKE<br/>2024/2025";
 	modal.style.position = "absolute";
 	modal.style.fontFamily = "Arial, sans-serif";
 	modal.style.fontSize = "14px";
