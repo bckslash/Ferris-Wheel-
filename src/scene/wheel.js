@@ -176,7 +176,7 @@ function createCabin() {
 				}
 			});
 
-			model.scale.set(0.9, 0.9, 0.9);
+			model.scale.set(1.3, 0.75, 0.9);
 			model.position.set(0, 0, 0);
 
 			cabin.add(model);

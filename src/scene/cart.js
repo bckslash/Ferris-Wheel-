@@ -5,7 +5,6 @@ const cart = (scene, position) => {
 	const loader = new GLTFLoader();
 
 	const { x, y, z } = position;
-	console.log(x, y, z);
 
 	loader.load(
 		"/models/cart/scene.gltf",
