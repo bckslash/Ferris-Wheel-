@@ -69,14 +69,13 @@ function grass() {
 					child.receiveShadow = true;
 				}
 
-				// Apply color to each cube in the grass
+				// Apply color to grass
 				if (child.parent && child.parent.name === "Gress_02") {
 					child.material = child.material.clone(); // Clone material
 					child.material.color.setHex(0x228b22); // Forest green for grass cubes
 				}
 			});
 
-			// Scale the grass
 			grass.scale.set(0.4, 0.4, 0.4);
 
 			// Create multiple grass instances
@@ -104,7 +103,6 @@ function grass() {
 function ticket_booth() {
 	const ticket_booth = new THREE.Group();
 
-	// Load GLB model
 	const loader = new GLTFLoader();
 	loader.load(
 		"/models/ticket_booth.glb",
@@ -117,7 +115,6 @@ function ticket_booth() {
 				}
 			});
 
-			// Scale the
 			ticket_booth.scale.set(0.5, 0.5, 0.5);
 
 			// rotate 180
@@ -135,7 +132,6 @@ function ticket_booth() {
 function fence() {
 	const fence = new THREE.Group();
 
-	// Load GLB model
 	const loader = new GLTFLoader();
 	loader.load(
 		"/models/fence.glb",
@@ -155,9 +151,6 @@ function fence() {
 				}
 			});
 
-			// Scale
-			// fence.scale.set(0.5, 0.5, 0.5);
-
 			// rotate 90
 			fence.rotation.y = Math.PI / 2;
 		},
@@ -173,7 +166,6 @@ function fence() {
 function food_cart() {
 	const food_cart = new THREE.Group();
 
-	// Load GLB model
 	const loader = new GLTFLoader();
 	loader.load(
 		"/models/food_cart.glb",
@@ -186,10 +178,8 @@ function food_cart() {
 				}
 			});
 
-			// Scale the
 			food_cart.scale.set(0.5, 0.5, 0.5);
 
-			// rotate 90
 			food_cart.rotation.y = Math.PI / 2;
 		},
 		undefined,
@@ -204,7 +194,6 @@ function food_cart() {
 function autodrom() {
 	const autodrom = new THREE.Group();
 
-	// Load GLB model
 	const loader = new GLTFLoader();
 	loader.load(
 		"/models/autodrom.glb",
@@ -217,10 +206,8 @@ function autodrom() {
 				}
 			});
 
-			// Scale the
 			autodrom.scale.set(0.25, 0.25, 0.25);
 
-			// rotate 90
 			autodrom.rotation.y = -Math.PI / 2;
 		},
 		undefined,

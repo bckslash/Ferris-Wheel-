@@ -30,8 +30,6 @@ const setupLights = (scene) => {
 
 	const sunLightMarker = createLightMarker(sunLight.position);
 	scene.add(sunLightMarker);
-	// const sunLightHelper = new THREE.DirectionalLightHelper(sunLight, 10);
-	// scene.add(sunLightHelper);
 
 	// Light
 	const light = new THREE.PointLight(0xffffff, 100, 100);
@@ -40,9 +38,6 @@ const setupLights = (scene) => {
 	light.shadow.mapSize.width = 1024;
 	light.shadow.mapSize.height = 1024;
 	scene.add(light);
-
-	// const lightHelper = new THREE.PointLightHelper(light, 10);
-	// scene.add(lightHelper);
 
 	return { light, sunLight, sunLightMarker };
 };

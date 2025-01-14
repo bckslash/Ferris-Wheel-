@@ -10,7 +10,6 @@ const cart = (scene, position) => {
 	loader.load(
 		"/models/cart/scene.gltf",
 		(gltf) => {
-			// Scale, position, and rotate model
 			gltf.scene.scale.set(x, y, z);
 			gltf.scene.position.set(0, 0, 0);
 
@@ -18,11 +17,10 @@ const cart = (scene, position) => {
 			gltf.scene.traverse((node) => {
 				if (node.isMesh) {
 					node.castShadow = true;
-					node.receiveShadow = true; // Enable both cast and receive shadow
+					node.receiveShadow = true;
 				}
 			});
 
-			// Add the model to the scene
 			scene.add(gltf.scene);
 		},
 		undefined,

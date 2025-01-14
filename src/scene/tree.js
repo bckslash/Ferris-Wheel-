@@ -72,14 +72,14 @@ function createAppleTree() {
 
 				// Check parent or group names and apply colors
 				if (child.parent && child.parent.name.includes("fruit")) {
-					child.material = child.material.clone(); // Clone material
-					child.material.color.setHex(0xff0000); // Red for fruit
+					child.material = child.material.clone();
+					child.material.color.setHex(0xff0000);
 				} else if (child.name.includes("trunk")) {
 					child.material = child.material.clone();
-					child.material.color.setHex(0x8b4513); // Brown for trunk
+					child.material.color.setHex(0x8b4513);
 				} else if (child.name.includes("branch")) {
 					child.material = child.material.clone();
-					child.material.color.setHex(0x228b22); // Forest green for branches
+					child.material.color.setHex(0x228b22);
 				}
 			});
 		},
@@ -110,10 +110,10 @@ function createPineTree() {
 				// Check parent or group names and apply colors
 				if (child.name.includes("trunk")) {
 					child.material = child.material.clone();
-					child.material.color.setHex(0x8b4513); // Brown for trunk
+					child.material.color.setHex(0x8b4513);
 				} else if (child.name.includes("leaf")) {
 					child.material = child.material.clone();
-					child.material.color.setHex(0x228b22); // Forest green for branches
+					child.material.color.setHex(0x228b22);
 				}
 			});
 

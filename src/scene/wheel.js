@@ -1,9 +1,9 @@
 import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 
-const wheelDistanceZ = 0.65; // Distance between the wheel and the cabins
-const wheelColor = 0x0077ff; // Color of the wheel
-const cabinColor = 0xffa500; // Brighter color for the cabins
+const wheelDistanceZ = 0.65;
+const wheelColor = 0x0077ff;
+const cabinColor = 0xffa500;
 
 // textures
 const textureLoader = new THREE.TextureLoader();
@@ -25,15 +25,15 @@ const createWheel = (scene) => {
 		new THREE.TorusGeometry(5, 0.15, 32, 10),
 		wheelMaterial
 	);
-	wheel1.castShadow = true; // Enable shadows for the wheel
-	wheel1.receiveShadow = true; // Enable shadows for the wheel
+	wheel1.castShadow = true;
+	wheel1.receiveShadow = true;
 
 	const wheel2 = new THREE.Mesh(
 		new THREE.TorusGeometry(5, 0.15, 32, 10),
 		wheelMaterial
 	);
-	wheel2.castShadow = true; // Enable shadows for the wheel
-	wheel2.receiveShadow = true; // Enable shadows for the wheel
+	wheel2.castShadow = true;
+	wheel2.receiveShadow = true;
 
 	wheel1.position.z = wheelDistanceZ;
 	wheel2.position.z = -wheelDistanceZ;
@@ -138,14 +138,6 @@ const createWheel = (scene) => {
 	const cabins = [];
 
 	for (let i = 0; i < numberOfCabins; i++) {
-		// const cabin = new THREE.Mesh(
-		// 	new THREE.BoxGeometry(1.3, 1.2, 1.0),
-		// 	new THREE.MeshStandardMaterial({
-		// 		map: cabinTexture,
-		// 		color: cabinColor,
-		// 	})
-		// );
-
 		const cabin = createCabin();
 
 		// Store the original angle for rotation reference
@@ -184,11 +176,9 @@ function createCabin() {
 				}
 			});
 
-			// Scale the cabin
 			model.scale.set(0.9, 0.9, 0.9);
 			model.position.set(0, 0, 0);
 
-			// Add the model to the cabin group
 			cabin.add(model);
 		},
 		undefined,

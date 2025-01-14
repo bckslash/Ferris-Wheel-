@@ -32,7 +32,7 @@ const sizes = {
 
 //create scene
 const scene = new THREE.Scene();
-scene.background = new THREE.Color(0x000000); // Dark blue color
+scene.background = new THREE.Color(0x00001b);
 
 //create camera
 const camera = new THREE.PerspectiveCamera(
@@ -60,8 +60,9 @@ const outputPass = new OutputPass();
 composer.addPass(outputPass);
 
 // shadows
-renderer.shadowMap.enabled = true; // Enable shadow maps
-renderer.shadowMap.type = THREE.PCFSoftShadowMap; // Optional: Choose shadow map type
+renderer.shadowMap.enabled = true;
+// Optional: Choose shadow map type
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
 // Variables for physics
 var physics = {
@@ -94,7 +95,6 @@ const createTreeRing = (count, distance) => {
 			Math.sin(angle) * distance
 		);
 
-		// set all trees same scale
 		randomTree.scale.set(1, 1, 1);
 		scene.add(randomTree);
 	}
@@ -168,11 +168,11 @@ const outlinePass = new OutlinePass(
 );
 
 // Set outline parameters
-outlinePass.edgeStrength = 5.0; // Edge strength
-outlinePass.edgeGlow = 1; // Edge glow
-outlinePass.edgeThickness = 1.0; // Edge thickness
-outlinePass.pulsePeriod = 1; // Pulse period
-outlinePass.visibleEdgeColor.set("#ffffff"); // Edge color when visible
+outlinePass.edgeStrength = 5.0;
+outlinePass.edgeGlow = 1;
+outlinePass.edgeThickness = 1.0;
+outlinePass.pulsePeriod = 1;
+outlinePass.visibleEdgeColor.set("#ffffff");
 
 composer.addPass(outlinePass);
 
@@ -216,42 +216,7 @@ window.addEventListener("click", (event) => {
 		console.log("Cabin position:", selectedCabin.position);
 		console.log("Cabin clicked:", selectedCabin);
 	}
-	// Log the intersection point in the scene
-	if (sceneIntersects.length > 0) {
-		const sceneIntersect = sceneIntersects[0];
-		const point = sceneIntersect.point;
-		console.log(`x=${point.x},\n y=${point.y},\n z=${point.z}`);
-	}
-});
 
-window.addEventListener("click", (event) => {
-	mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-	mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-
-	raycaster.setFromCamera(mouse, camera);
-	const intersects = raycaster.intersectObjects(cabins);
-	const sceneIntersects = raycaster.intersectObjects(scene.children, true); // Check all children in the scene
-
-	// Select the cabin when clicked
-
-	if (intersects.length > 0) {
-		// Find the highest-level cabin group
-		let cabin = intersects[0].object;
-		while (cabin.parent && !cabins.includes(cabin)) {
-			cabin = cabin.parent;
-		}
-
-		if (cabins.includes(cabin)) {
-			selectedCabin = cabin;
-			controls.enabled = false; // Disable orbit controls
-			pointerLockControls.lock(); // Enable pointer lock controls
-
-			// Get cabin's world position
-			const cabinWorldPosition = new THREE.Vector3();
-			selectedCabin.getWorldPosition(cabinWorldPosition);
-			console.log("Cabin world position:", cabinWorldPosition);
-		}
-	}
 	// Log the intersection point in the scene
 	if (sceneIntersects.length > 0) {
 		const sceneIntersect = sceneIntersects[0];
@@ -261,7 +226,7 @@ window.addEventListener("click", (event) => {
 });
 
 function resetCameraPosition() {
-	camera.position.set(0, 0, 20); // Adjust these values to your base position
+	camera.position.set(0, 0, 20);
 	camera.lookAt(wheel.position);
 }
 
@@ -269,8 +234,8 @@ function resetCameraPosition() {
 window.addEventListener("keydown", (event) => {
 	if (event.key === "x") {
 		selectedCabin = null;
-		controls.enabled = true; // Enable orbit controls
-		pointerLockControls.unlock(); // Disable pointer lock controls
+		controls.enabled = true;
+		pointerLockControls.unlock();
 		resetCameraPosition();
 	}
 });
@@ -298,7 +263,7 @@ function animate() {
 			0
 		);
 
-		// Apply simple physics for swinging effect
+		// Apply physics for swinging effect
 		const swingOffset =
 			Math.sin(cabin.userData.swing) * physics.swingAmplitude;
 		cabin.userData.swing += physics.swingSpeed; // Increment swing angle over time
@@ -307,7 +272,7 @@ function animate() {
 		cabin.rotation.z = swingOffset; // Swinging effect without spinning
 	});
 
-	// camera look at selected cabin
+	// place camera into cabin
 	if (selectedCabin) {
 		selectedCabin.getWorldPosition(cabinWorldPosition);
 		camera.position.copy(cabinWorldPosition);

@@ -11,7 +11,6 @@ const debugGUI = ({
 	skybox,
 	camera,
 }) => {
-	// GUI
 	const gui = new GUI();
 
 	const physicsFolder = gui.addFolder("Physics");
@@ -103,7 +102,7 @@ const debugGUI = ({
 				const file = event.target.files[0];
 				const reader = new FileReader();
 				reader.onload = (e) => {
-					const texture = new THREE.TextureLoader().load(
+					new THREE.TextureLoader().load(
 						e.target.result,
 						(texture) => {
 							skybox.material.map = texture;
