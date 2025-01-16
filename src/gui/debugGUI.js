@@ -35,7 +35,7 @@ const debugGUI = ({
 
 	lightFolder
 		.add(lightSettings, "lightIntensity", 0, 200)
-		.name("Light Intensity")
+		.name("Scene Light Intensity")
 		.onChange((value) => {
 			light.intensity = value;
 		})

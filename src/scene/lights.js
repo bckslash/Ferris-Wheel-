@@ -34,9 +34,6 @@ const setupLights = (scene) => {
 	// Light
 	const light = new THREE.PointLight(0xffffff, 100, 100);
 	light.position.set(0, 15, 0);
-	light.castShadow = true;
-	light.shadow.mapSize.width = 1024;
-	light.shadow.mapSize.height = 1024;
 	scene.add(light);
 
 	return { light, sunLight, sunLightMarker };
