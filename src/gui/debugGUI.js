@@ -39,7 +39,7 @@ const debugGUI = ({
 		.onChange((value) => {
 			light.intensity = value;
 		})
-		.setValue(0);
+		.setValue(50);
 
 	lightFolder
 		.add(lightSettings, "sunIntensity", 0, 4)
